@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.ui.view" id="cs_id">
+            <field name="name">account.invoice.form</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form" />
+            <field name="arch" type="xml">
+                <field name="date_invoice" position="after">
+                    <field name="css" />
+                    <field name="from_date" readonly="0"/>
+                    <field name="to_date" readonly="0"/>
+                    <field name="outstanding" readonly="1"/>
+                    <field name="outstanding_amount" readonly="1"/>
+                    <field name="grand_total" readonly="1"/>
+                    <field name="ntn_num" />
+                    <field name="gst_num" />
+                    <field name="phone" />
+                    <field name="mobile" />
+                    <field name="uplink_date" />
+                </field>
+                <xpath expr="//button[@string='Validate']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//button[@string='Cancel Invoice']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="context">"{'show_address':0}"</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="active_inactive"/>
+                    <field name="address"/>
+                    <field name="supplier_id"/>
+                </xpath>
+                <xpath expr="//field[@name='date_invoice']" position="before">
+                    <field name="invoice_type"/>
+                    <field name="sti_num"/>
+                </xpath>
+                <!--<xpath expr="//field[@name='amount_discount']" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr="//page/field/tree/field[@name='discount']" position="after">-->
+                    <!--<field name="" readonly="1"/>-->
+                <!--</xpath>-->
+                <xpath expr="//field[@name='fiscal_position']" position="after">
+                    <field name="invoice_remarks"/>
+                    <field name="contactperson"/>
+                    <field name="contactpersondetails"/>
+                    <field name="tempaddress"/>
+                    <field name="address_criteria"/>
+                    <separator string="Reset Account Heads" attrs="{'invisible': [('state','!=','draft')]}"/><br/>
+                    <button name="account_head" string="Reset Heads" type="object" class="oe_highlight" attrs="{'invisible': [('state','!=','draft')]}" />
+                </xpath>
+                <xpath expr="//notebook/page[@string='Invoice Lines']" position="after">
+                    <page string="Payment Follow-Ups">
+                        <group>
+                            <field name="responsible_person"/>
+                            <field name="date"/>
+                            <field name="next_action"/>
+                            <field name="riders_" string="Assigned to Rider"/>
+                            <field name="payment_received"/>
+                            <field name="payment_method"/>
+                            <field name="cheque_no" attrs="{'invisible': [('payment_method','=','Cash')]}"/>
+                        </group>
+                        <group>
+                            <field name="remarks"/>
+                            <field name="remarks_invoice"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='account_id']" position="after">
+                    <field name="create_date" readonly="1"/>
+                    <field name="create_uid" readonly="1"/>
+                </xpath>
+            </field>
+        </record>
+        <record id="account.invoice_tree_mutual" model="ir.ui.view">
+              <field name="name">account.invoice.tree</field>
+              <field name="model">account.invoice</field>
+              <field name="inherit_id" ref="account.invoice_tree" />
+              <field name="arch" type="xml">
+                  <field name="partner_id" position="after">
+                      <!--<field name="css"/>-->
+                      <field name="css_number"/>
+                      <field name="credit_card"/>
+                  </field>
+                  <xpath expr="//field[@name='origin']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='date_due']" position="after">
+                      <field name="responsible_person"/>
+                      <field name="date"/>
+                      <field name="riders_" string="Assigned To Rider"/>
+                      <field name="payment_received"/>
+                      <field name="remarks_invoice" string="Remarks"/>
+                  </xpath>
+                  <xpath expr="//field[@name='residual']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                   <xpath expr="//field[@name='amount_untaxed']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+              </field>
+        </record>
+        <record  model="ir.ui.view" id="view_account_invoice_filter">
+            <field name="name">account.invoice.select</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.view_account_invoice_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='number']" position="before">
+                    <field name="css"/>
+                    <field name="responsible_person"/>
+                    <field name="riders_"/>
+                    <field name="date_invoice"/>
+                    <field name="company_id"/>
+                    <field name="number"/>
+                    <field name="sti_num"/>
+                    <field name="invoice_type"/>
+                    <field name="remarks_invoice"/>
+                </xpath>
+                <search string="Search Invoice">
+                    <group string="Recovery Officers">
+                        <filter string="My" domain="[('responsible_person','=',uid)]"/>
+                        <filter string="Payment Received" domain="[('payment_received','=',True)]"/>
+                        <filter string="Payment Not Received" domain="[('payment_received','=',False)]"/>
+                        <filter string="Assigned to Riders" domain="[('riders_','!=',False)]"/>
+                        <filter string="Not Assigned to Riders" domain="[('riders_','=',False)]"/>
+                        <filter string="Received by Me" domain="[('payment_received','=',True),('responsible_person','=',uid)]"/>
+                        <filter string="Not Received by Me" domain="[('payment_received','=',False),('responsible_person','=',uid)]"/>
+                        <filter string="Assigned to Riders by Me" domain="[('riders_','!=',False),('responsible_person','=',uid)]"/>
+                        <filter string="Assigned to Riders not by Me" domain="[('riders_','=',False),('responsible_person','=',uid)]"/>
+                        <filter string="Daily" domain="[('write_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('write_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                     </group>
+                </search>
+
+            </field>
+        </record>
+         <record  model="ir.ui.view" id="account.view_move">
+            <field name="name">account.move.form</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_move_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='company_id']" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="create_date" readonly="1"/>
+                    <field name="create_uid" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='ref']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ================================================== Account Move Journal Entries Search View ===============================================-->
+        <record  model="ir.ui.view" id="account.view_account_move_filter_search">
+            <field name="name">account.move.select</field>
+            <field name="model">account.move</field>
+            <field name="inherit_id" ref="account.view_account_move_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='name']" position="before">
+                    <field name="ref"/>
+                </xpath>
+                <search string="Search Move">
+                    <group string="Daily">
+                        <filter string="Today" domain="[('create_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('create_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                    </group>
+                    <group string="Companies">
+                       <filter string="Mutual Security" domain="[('company_id','=','Mutual Security')]"/>
+                       <filter string="Mutual Security Systems" domain="[('company_id','=','Mutual Security Systems')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- ================================================== Account Move Journal Tree View ===============================================-->
+         <record id="account.view_move_tree_mutual" model="ir.ui.view">
+              <field name="name">account.invoice.tree</field>
+              <field name="model">account.move</field>
+              <field name="inherit_id" ref="account.view_move_tree" />
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='to_check']" position="after">
+                      <field name="company_id"/>
+                  </xpath>
+              </field>
+        </record>
+
+          <!-- ================================================== Account Journal Items Tree View ===============================================-->
+         <record id="account.view_move_line_tree_mutual" model="ir.ui.view">
+              <field name="name">account.move.line.tree</field>
+              <field name="model">account.move.line</field>
+              <field name="inherit_id" ref="account.view_move_line_tree" />
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='partner_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='journal_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='name']" position="attributes">
+                      <attribute name="string">Invoice</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='reconcile_ref']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='period_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+              </field>
+        </record>
+
+         <!-- ================================================== customer payments form View ===============================================-->
+         <record id="account.view_form_move_tree_mutual" model="ir.ui.view">
+              <field name="name">account.voucher.receipt.form</field>
+              <field name="model">account.voucher</field>
+              <field name="inherit_id" ref="account_voucher.view_vendor_receipt_form" />
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                      <field name="cs_number" readonly="1"/>
+                  </xpath>
+                   <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="create_date" readonly="1"/>
+                    <field name="create_uid" readonly="1"/>
+                </xpath>
+              </field>
+        </record>
+
+
+        <!-- ================================================== Customer Payments Search View ===============================================-->
+        <record  model="ir.ui.view" id="account.view_account_move_filter_search">
+            <field name="name">account.voucher.customer.pay.select</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_voucher_filter_customer_pay" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='number']" position="after">
+                    <field name="cs_number" />
+                    <field name="reference"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- ================================================== customer Tree View ===============================================-->
+         <record id="account.voucher_move_tree_mutual" model="ir.ui.view">
+              <field name="name">account.voucher.tree</field>
+              <field name="model">account.voucher</field>
+              <field name="inherit_id" ref="account_voucher.view_voucher_tree" />
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                      <field name="cs_number"/>
+                  </xpath>
+              </field>
+        </record>
+
+        <record id="account.voucher_move_tree_mutual" model="ir.ui.view">
+              <field name="name">account.voucher.tree</field>
+              <field name="model">account.voucher</field>
+              <field name="inherit_id" ref="account_voucher.view_voucher_tree" />
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='partner_id']" position="after">
+                      <field name="cs_number"/>
+                  </xpath>
+              </field>
+        </record>
+    </data>
+</openerp>

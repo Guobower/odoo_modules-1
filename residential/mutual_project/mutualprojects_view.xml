@@ -1,0 +1,801 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record id="relatives_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Relatives</field>
+            <field name="res_model">relatives</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem
+            name="Relatives"
+            action="relatives_open_project_attachment_view"
+            id="menu_relatives_open_project_attachment_view"
+            sequence="50"
+            parent="project.menu_project_management">
+        </menuitem>
+        <record id="relatives_activities_form_view" model="ir.ui.view">
+            <field name="name">relatives_activities.form.view</field>
+            <field name="model">relatives</field>
+            <field name="arch" type="xml">
+                <tree string="tech_activities">
+                    <field name="cs"/>
+                    <field name="relativename"/>
+                    <field name="relationship"/>
+                    <field name="contact1"/>
+                    <field name="contact2"/>
+                </tree>
+            </field>
+        </record>
+        <record  model="ir.ui.view" id="Relatives_Search">
+            <field name="name">Relagtives Search</field>
+            <field name="model">relatives</field>
+            <field name="arch" type="xml">
+                <search string="Relatives">
+                    <field name="cs"/>
+                </search>
+            </field>
+        </record>
+        <!-- =========================== Issues Logs Begins ================================ -->
+        <record id="tech_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Issues Logs</field>
+            <field name="res_model">tech.activities.issues</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem
+            name="Issues TimeIn/Out Activities"
+            action="tech_open_project_attachment_view"
+            id="menu_tech_open_project_attachment_view"
+            sequence="30"
+            parent="project.menu_project_management">
+        </menuitem>
+        <record id="tech_activities_form_view" model="ir.ui.view">
+            <field name="name">tech_activities.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">tech.activities.issues</field>
+            <field name="arch" type="xml">
+                <form string="tech_activities">
+                    <sheet>
+                        <group string="Technician Activities">
+                            <group>
+                                 <field name="technician_name"/>
+                                 <field name="tech_name"/>
+                                 <field name="total_time"/>
+                            </group>
+                            <group>
+                                 <field name="reason"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- =========================== Issues Logs Ends ================================ -->
+
+        <record model="ir.ui.view" id="project_issue_activities">
+            <field name="name">Technician Issues History</field>
+            <field name="view_type">tree</field>
+            <field name="model">tech.activities.issues</field>
+            <field name="arch" type="xml">
+                <tree string="Technician Activities" editable="top" default_order="date_start asce">
+                    <field name="issue_id" readonly="1"/>
+                    <field name="cs_number" readonly="1"/>
+                    <field name="tech_name" readonly="1"/>
+                    <field name="technician_name_other"/>
+                    <field name="multi_tech_other" widget="many2many_tags"/>
+                    <!--<field name="technician_name"/>-->
+                    <!--<field name="multi_tech" widget="many2many_tags"/>-->
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="compute_total_time"/>
+                   <!-- <field name="first_signal"/>-->
+                    <field name="reason"/>
+                    <field name="status"/>
+                    <field name="create_date" readonly="1"/>
+                    <!--<field name="create_date" readonly="1"/>-->
+                </tree>
+            </field>
+        </record>
+
+        <record  model="ir.ui.view" id="Issues_log_Search">
+            <field name="name">Issues log Search</field>
+            <field name="model">tech.activities.issues</field>
+            <field name="arch" type="xml">
+                <search string="Search Logs">
+                    <field name="issue_id"/>
+                    <field name="cs_number"/>
+                    <field name="technician_name_other" filter_domain="['|',('technician_name_other','ilike',self),('multi_tech_other','ilike',self)]"/>
+                    <group string="Custom Filter">
+                        <filter string="Create Day" context="{'group_by':'create_date:day'}" help="Create Date"/>
+                        <filter string="Create Month" context="{'group_by':'create_date:month'}" help="Create Month"/>
+                        <filter string="Create year" context="{'group_by':'create_date:year'}" help="Create Year"/>
+                    </group>
+                    <group string="TimeIn/TimeOut">
+                        <filter string="No TimeIn" domain="[('date_start','=',False)]"/>
+                        <filter string="No TimeOut" domain="[('date_end','=',False)]"/>
+                        <filter string="No TimeIn/Out" domain="[('date_start','=',False),('date_end','=',False)]"/>
+                        <filter string="Both TimeIn/Out" domain="[('date_start','!=',False),('date_end','!=',False)]"/>
+                    </group>
+                    <group string="TimeIn/Out By Day/Month">
+                       <filter string="Today" domain="[('date_start', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date_start', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                        <filter string="TimeIn By Day" context="{'group_by':'date_start:day'}" />
+                        <filter string="TimeIn By Month" context="{'group_by':'date_start:month'}" />
+                        <filter string="TimeOut By Day" context="{'group_by':'date_end:day'}" />
+                        <filter string="TimeOut By Month" context="{'group_by':'date_end:month'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="project_tasks_activities">
+            <field name="name">Technician Tasks History</field>
+            <field name="view_type">tree</field>
+            <field name="model">tech.activities.tasks</field>
+            <field name="arch" type="xml">
+                <tree string="Technician Activities" editable="top">
+                    <field name="task_id" readonly="1"/>
+                    <field name="cs_number" readonly="1"/>
+                    <field name="tech_name_tasks" readonly="1"/>
+                    <field name="technician_name_other"/>
+                    <field name="multi_tech_other" widget="many2many_tags"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="compute_total_time"/>
+                    <!--<field name="first_signal"/>-->
+                    <field name="reason_tasks"/>
+                    <field name="status"/>
+                    <field name="create_date" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record  model="ir.ui.view" id="Tasks_log_Search">
+            <field name="name">Tasks log Search</field>
+            <field name="model">tech.activities.tasks</field>
+            <field name="arch" type="xml">
+                <search string="Search Logs">
+                    <field name="task_id"/>
+                    <field name="cs_number"/>
+                    <group string="Custom Filter">
+                        <filter string="Create Day" context="{'group_by':'create_date:day'}" help="Create Date"/>
+                        <filter string="Create Month" context="{'group_by':'create_date:month'}" help="Create Month"/>
+                        <filter string="Create year" context="{'group_by':'create_date:year'}" help="Create Year"/>
+                    </group>
+                    <group string="TimeIn/TimeOut">
+                        <filter string="No TimeIn" domain="[('date_start','=',False)]"/>
+                        <filter string="No TimeOut" domain="[('date_end','=',False)]"/>
+                        <filter string="No TimeIn/Out" domain="[('date_start','=',False),('date_end','=',False)]"/>
+                        <filter string="Both TimeIn/Out" domain="[('date_start','!=',False),('date_end','!=',False)]"/>
+                    </group>
+                    <group string="TimeIn/Out By Day/Month">
+                        <filter string="TimeIn By Day" context="{'group_by':'date_start:day'}" />
+                        <filter string="TimeIn By Month" context="{'group_by':'date_start:month'}" />
+                        <filter string="TimeOut By Day" context="{'group_by':'date_end:day'}" />
+                        <filter string="TimeOut By Month" context="{'group_by':'date_end:month'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+
+
+        <!-- =========================== Tasks Logs Begins ================================ -->
+        <record id="tech_open_project_attachment_task_view" model="ir.actions.act_window">
+	        <field name="name">Tasks Logs</field>
+            <field name="res_model">tech.activities.tasks</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem
+            name="Tasks TimeIn/Out Activities"
+            action="tech_open_project_attachment_task_view"
+            id="menu_tech_open_project_attachment_task_view"
+            sequence="40"
+            parent="project.menu_project_management">
+        </menuitem>
+        <record id="tech_activities_form_view" model="ir.ui.view">
+            <field name="name">tech_activities.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">tech.activities.tasks</field>
+            <field name="arch" type="xml">
+                <form string="tech_activities_tasks">
+                    <sheet>
+                        <group string="Technician Activities">
+                            <group>
+                                 <field name="technician_name_tasks"/>
+                                 <field name="tech_name_tasks"/>
+                                 <field name="total_time_tasks"/>
+                            </group>
+                            <group>
+                                 <field name="reason_tasks"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- =========================== Tasks Logs Ends ================================ -->
+
+        <!--====================================== List of customers showing in project module Begins ==================================-->
+
+        <record id="action_partner_customer_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'default_customer':1, 'search_default_customer':1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a customer: discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Customers"
+            action="action_partner_customer_form"
+            id="menu_action_partner_customer_form"
+            sequence="20"
+            parent="project.menu_project_management">
+        </menuitem>
+
+
+        <!--====================================== List of customers showing in project module Begins ==================================-->
+
+
+        <record model="ir.ui.view" id="base.view_partner_form_inherit_inherit">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="groups_id" eval="[(4,[ref('project.group_project_user')])]"/>
+            <field name="arch" type="xml">
+                 <xpath expr="//page[@string='Accounting']" position="attributes">
+                     <attribute name="invisible">False</attribute>
+                 </xpath>
+                <xpath expr="//page[@string='Sales &amp; Purchases']" position="attributes">
+                    <attribute name="invisible">False</attribute>
+                </xpath>
+                <xpath expr='//form[@string="Partners"]' position='attributes'>
+                    <attribute name="create">false</attribute>
+                </xpath>
+
+            </field>
+        </record>
+
+       <!-- <menuitem action="open_view_project_all" id="menu_tech" name="Projects" parent="menu_project_management" sequence="1"/>-->
+
+        <!--====================================== Task form view Beginning ==================================-->
+        <record model="ir.ui.view" id="project.view_task">
+            <field name="name">project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="attributes">
+                    <attribute name="class">oe_form_sheet_full_screen</attribute>
+                </xpath>
+                <field name="name" position="replace">
+                    <field name="name" />
+                </field>
+                <field name="partner_id" position="replace">
+
+                </field>
+                <xpath expr="//field[@name='reviewer_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='project_id']" position="before">
+                    <field name="create_uid" readonly="True"/>
+                    <field name="partner_id"  attrs="{'readonly':[('stage_id','!=',19)]}"/>
+                    <field name="cs_number_task"/>
+                    <field name="city_task"/>
+                    <field name="monitoring_address_task"/>
+                    <field name="mobile_task"/>
+                    <field name="phone_task"/>
+                </xpath>
+                <xpath expr="//field[@name='create_uid']" position="attributes">
+                    <attribute name="string">Logged by</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_deadline']" position="before">
+                    <field name="id"/>
+                    <field name="create_date"/>
+                    <field name="uplink_date_task"/>
+                    <field name="complaint_reference"/>
+                    <field name="user_id"/>
+                    <!--<field name="task_status"/>-->
+                    <!--<field name="status"/>-->
+                    <field name="task_status_confirm"/>
+                    <field name="disco_reasons" attrs="{'invisible':[('name','!=','disco')]}"/>
+                    <field name="system_status" attrs="{'invisible':[('name','!=','disco')]}"/>
+                    <field name="removal_address" attrs="{'invisible':[('name','!=','Shifting')]}"/>
+                    <field name="survey_address" attrs="{'invisible':[('name','!=','Shifting')]}"/>
+                    <field name="print_removal" attrs="{'invisible':[('name','!=','Shifting')]}"/>
+                    <field name="print_survey" attrs="{'invisible':[('name','!=','Shifting')]}"/>
+                    <!--<field name="timeIn"/>-->
+                    <!--<field name="first_signal_time_task"/>-->
+                    <!--<field name="timeOut"/>-->
+                    <!--<field name="compute_total_time"/>-->
+                    <!--<field name="finalstatus"/>-->
+                </xpath>
+                <xpath expr="//field[@name='task_status_confirm']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_deadline']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='categ_ids']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Description']" position="attributes">
+                    <attribute name="string">Remarks</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Extra Info']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='reviewer_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Remarks']" position="before">
+                    <page string="Timesheet">
+                          <field name="tech_name_tasks" colspan="4" nolabel="1">
+                            <tree editable="top" string="Timesheets">
+                                <field name="technician_name_other"/>
+                                <field name="multi_tech_other" widget="many2many_tags"/>
+                                <!--<field name="first_signal"/>-->
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="compute_total_time"/>
+                                <field name="reason_tasks" />
+                                <field name="create_date" readonly="1"/>
+                            </tree>
+                          </field>
+                    </page>
+                </xpath>
+                <xpath expr="//page[@string='Remarks']" position="before">
+                    <page string="Description">
+                          <field name="description_remarks" colspan="4" nolabel="1">
+                            <tree editable="bottom" string="description">
+                                <field name="remarks"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                            </tree>
+                          </field>
+                    </page>
+                </xpath>
+                 <xpath expr="//page[@string='Remarks']" position="after">
+                    <page string="Reconnection Remarks" attrs="{'invisible':[('name','!=','reconnection')]}">
+                        <group><field name="date_of_next_inv" attrs="{'required':[('name','=','reconnection')]}"/>
+                        <field name="start_date" attrs="{'required':[('name','=','reconnection')]}"/>
+                        <field name="end_date" attrs="{'required':[('name','=','reconnection')]}"/>
+                        <field name="m_p" widget="radio" attrs="{'required':[('name','=','reconnection')]}"/>
+                        <field name="recon_rem" />
+                        </group>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+         <!--====================================== Task form view Ending ==================================-->
+
+
+        <!--====================================== Issue form view Beginning ==================================-->
+         <record model="ir.ui.view" id="project_issue.project_issue">
+            <field name="name">Project Issue Tracker Form</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.project_issue_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="attributes">
+                    <attribute name="class">oe_form_sheet_full_screen</attribute>
+                </xpath>
+                <field name="name" position="replace">
+                     <field name="name" />
+                </field>
+                <field name="categ_ids" position="attributes">
+                    <attribute name="string">Other Complaints</attribute>
+                </field>
+                <field name="id" position="attributes">
+                    <attribute name="string">Complaint ID</attribute>
+                </field>
+                <field name="email_from" position="replace">
+
+                </field>
+                <field name="version_id" position="replace">
+
+                </field>
+                <xpath expr="//field[@name='task_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='task_id']" position="attributes">
+                    <attribute name="options">{'limit': 0, 'search':false, 'create': True, 'create_edit': True}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='task_id']" position="after">
+                    <field name="task_status" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='priority']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <field name="id" position="after">
+                    <!--<field name="user_id"/>-->
+                    <field name="multi_tech" widget="many2many_tags"/>
+                    <field name="user_id_issue"/>
+                    <field name="additional"/>
+                    <field name="first_signal_time"/>
+                    <field name="date_start" />
+                    <field name="date_end" />
+                    <field name='compute_total_time'/>
+                    <field name="finalstatus"/>
+                </field>
+                <field name="user_id_issue" position="after">
+                    <field name="payment_r"/>
+                </field>
+                <field name="payment_r" position="after">
+                    <field name="payment"/>
+                </field>
+                <field name="id" position="before">
+                    <field name="priority" widget="priority"/>
+                    <field name="create_date"/>
+                    <field name="create_uid" readonly="1"/>
+                </field>
+                <xpath expr="//field[@name='create_uid']" position="attributes">
+                    <attribute name="string">Logged by</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Extra Info']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='case_escalate']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='first_signal_time']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_start']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_end']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='compute_total_time']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='compute_total_time']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='multi_tech']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='progress']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                 <field name="partner_id" position="after">
+                     <field name="responsibleperson" />
+                     <field name="contactperson"/>
+                     <field name="cs_number_issue"/>
+                     <field name="city_issue"/>
+                     <field name="monitoring_address_issue"/>
+                     <field name="mobile_issue"/>
+                     <field name="phone_issue"/>
+                 </field>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="customer_status"/>
+                </xpath>
+                <xpath expr="//page[@string='Description']" position="before">
+                    <page string="Timesheet">
+                          <field name="tech_name" colspan="6" nolabel="1" width="200">
+                            <tree editable="top" string="Timesheets" >
+                                <field name="technician_name_other" default_focus="1"/>
+                                <field name="multi_tech_other" widget="many2many_tags"/>
+                                <!--<field name="first_signal"/>-->
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="compute_total_time"/>
+                                <field name="reason"/>
+                                <field name="create_date" readonly="1"/>
+                            </tree>
+                          </field>
+                    </page>
+                </xpath>
+                <notebook>
+                    <page string="SMS">
+                        <group>
+                            <field name="techContact"/>
+                            <field name="sms"/>
+                            <field name="status"/>
+                        </group>
+                            <button name="details" string="Details" type="object" class="btn-link" />
+                            <button name="smsSent" string="Sent" type="object" class="btn-link"  />
+                    </page>
+                </notebook>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='finalstatus']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'limit': 0, 'create': false, 'create_edit': false}</attribute>
+                </xpath>
+
+            </field>
+        </record>
+        <!--====================================== Issue form view Ending ==================================-->
+
+        <!--====================================== List view of Issue form for metrics Begins ==================================-->
+         <record id="project_issue.project_issue_tree_view_mutual" model="ir.ui.view">
+              <field name="name">Project Issue Tracker Tree</field>
+              <field name="model">project.issue</field>
+              <field name="inherit_id" ref="project_issue.project_issue_tree_view" />
+              <field name="priority" eval="20"/>
+              <field name="arch" type="xml">
+                  <field name="version_id" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </field>
+                  <field name="project_id" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </field>
+                  <field name="progress" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </field>
+                  <field name="user_id" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </field>
+              </field>
+        </record>
+
+        <record id="mutual_issue_tree" model="ir.ui.view">
+              <field name="name">Project Issue-Feature Tracker Tree</field>
+              <field name="model">project.issue</field>
+              <field name="inherit_id" ref="project_issue.project_feature_tree_view" />
+              <field name="priority" eval="20"/>
+              <field name="arch" type="xml">
+                  <field name="priority" position="after">
+                      <!--<field name="user_id_issue"/>-->
+                      <field name="cs_number_issue"/>
+                      <!--<field name="city_issue"/>-->
+                      <field name="monitoring_address_issue"/>
+                      <!--<field name="task_id" />-->
+                      <field name="responsibleperson"/>
+                      <field name="contactperson"/>
+                      <!--<field name="compute_total_time"/>-->
+                  </field>
+                  <field name="user_id" position="after">
+                      <field name="create_date"/>
+                  </field>
+                  <field name="version_id" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </field>
+                  <field name="name" position="attributes">
+                     <attribute name="string">Complaints</attribute>
+                  </field>
+                  <field name="partner_id" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </field>
+                   <field name="user_id" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </field>
+                  <xpath expr="//field[@name='stage_id']" position="after">
+                      <!--<field name="additional"/>-->
+                      <field name="task_id"/>
+                      <field name="task_status"/>
+                  </xpath>
+                  <xpath expr="//field[@name='stage_id']" position="attributes">
+                      <attribute name="string">Complaint Status</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='priority']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//tree[@string='Feature Tracker Tree']" position="attributes">
+                    <attribute name="colors">green:task_status!=False</attribute>
+                  </xpath>
+            </field>
+        </record>
+        <!--====================================== List view of Issue form for metrics ends ==================================-->
+
+        <!--====================================== List view of tasks form for metrics Begins ==================================-->
+        <record id="mutual_task_tree" model="ir.ui.view">
+              <field name="name">project.task.tree</field>
+              <field name="model">project.task</field>
+              <field name="inherit_id" ref="project.view_task_tree2" />
+              <field name="priority" eval="20"/>
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='project_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='date_start']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='date_end']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='progress']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='name']" position="before">
+                      <field name="id"/>
+                      <field name="complaint_reference"/>
+                  </xpath>
+                  <xpath expr="//field[@name='name']" position="after">
+                      <field name="create_uid"/>
+                      <field name="cs_number_task"/>
+                      <field name="city_task"/>
+                      <field name="monitoring_address_task"/>
+                  </xpath>
+                  <xpath expr="//field[@name='user_id']" position="after">
+                      <!--<field name="timeIn"/>-->
+                      <!--<field name="timeOut"/>-->
+                      <!--<field name="compute_total_time"/>-->
+                      <field name="description"/>
+                      <field name="create_date"/>
+                  </xpath>
+                  <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="string">Remarks</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='create_uid']" position="attributes">
+                      <attribute name="string">Logged by</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='user_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+            </field>
+        </record>
+        <!--====================================== List view of tasks form for metrics ends ==================================-->
+
+         <!--==========================Search View of Issues Begins=============================-->
+        <record  model="ir.ui.view" id="project_issue.view_project_issue_filter_search">
+            <field name="name">Project Issue Tracker Search</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.view_project_issue_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='partner_id']" position="before">
+                    <field name="cs_number_issue"/>
+                    <field name="mobile_issue"/>
+                    <field name="phone_issue"/>
+                    <field name="monitoring_address_issue"/>
+                </xpath>
+                <xpath expr="//search/field[@name='partner_id']" position="after">
+                    <field name="priority"/>
+                    <field name="create_date"/>
+                    <field name="user_id_issue"/>
+                    <field name="tech_name" />
+                </xpath>
+                 <search string="Issue Tracker Search">
+                     <group string="Complaint Status">
+                         <filter string="New" domain="[('stage_id','=','New')]"/>
+                         <filter string="Printout Forwarded" domain="[('stage_id','=','Printout Forwarded')]"/>
+                         <filter string="Assigned to Technician" domain="[('stage_id','=','Assigned to Technician')]"/>
+                         <filter string="In Progress" domain="[('stage_id','=','In Progress')]"/>
+                         <filter string="Completed by CMS" domain="[('stage_id','=','Completed by CMS')]"/>
+                         <filter string="Resolved" domain="[('stage_id','=','Resolved')]"/>
+                         <filter string="Additional" domain="[('additional','=',True)]"/>
+                         <filter string="Payment Pending" domain="[('payment','=',True)]"/>
+                         <filter string="Payment Received" domain="[('payment_r','=',True)]"/>
+                     </group>
+                     <group string="By Day Update Stages">
+                        <filter name="date_last_stage_update" string="Daily" context="{'group_by':'date_last_stage_update:day'}"/>
+                        <filter name="date_last_stage_update" string="Monthly" context="{'group_by':'date_last_stage_update:month'}"/>
+                        <filter name="date_last_stage_update" string="Yearly" context="{'group_by':'date_last_stage_update:year'}"/>
+                     </group>
+                </search>
+            </field>
+        </record>
+         <!--==========================Search View Ends=============================-->
+
+         <!--==========================Search View of tasks=============================-->
+          <record  model="ir.ui.view" id="project.view_task_search_form_search">
+            <field name="name">project.task.search.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='categ_ids']" position="before">
+                    <field name="id"/>
+                    <field name="cs_number_task"/>
+                    <field name="create_uid"/>
+                    <field name="mobile_task"/>
+                    <field name="phone_task"/>
+                    <field name="monitoring_address_task"/>
+                    <field name="disco_reasons"/>
+                    <field name="system_status"/>
+                </xpath>
+                <xpath expr="//search/field[@name='partner_id']" position="after">
+                    <field name="priority"/>
+                    <field name="create_date"/>
+                </xpath>
+                <search string="Tasks">
+                    <group string="Tasks Status">
+                         <filter string="New" domain="[('stage_id','=','New')]"/>
+                         <filter string="Printout Forwarded" domain="[('stage_id','=','Printout Forwarded')]"/>
+                         <filter string="Assigned to Technician" domain="[('stage_id','=','Assigned to Technician')]"/>
+                         <filter string="In Progress" domain="[('stage_id','=','In Progress')]"/>
+                         <filter string="Completed by CMS" domain="[('stage_id','=','Completed by CMS')]"/>
+                         <filter string="Resolved" domain="[('stage_id','=','Resolved')]"/>
+                    </group>
+                    <group string="By Day Update Stages">
+                        <filter name="date_last_stage_update" string="Daily" context="{'group_by':'date_last_stage_update:day'}"/>
+                        <filter name="date_last_stage_update" string="Monthly" context="{'group_by':'date_last_stage_update:month'}"/>
+                        <filter name="date_last_stage_update" string="Yearly" context="{'group_by':'date_last_stage_update:year'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!--==========================Search View Ends=============================-->
+
+        <!--====================================== Kanban view of issue begins ==================================-->
+        <record model="ir.ui.view" id="project_issue_kanban_view">
+            <field name="name">Project Issue Kanban</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.project_issue_kanban_view"/>
+            <field name="context">{'search_default_cs_number_issue':1}</field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after"><br/>
+                     <span style="color:royalblue;">
+                         <strong><field name="cs_number_issue"/></strong>
+                     </span>
+                    <field name="create_date"/>
+                     <span style="color:purple !important; font-weight:bold">
+                         <br/><field name="task_id"/>
+                         <br/><field name="task_status"/>
+                    </span>
+                </field>
+                <xpath expr='//kanban'  position="attributes">
+                   <attribute name="quick_create">0</attribute>
+                </xpath>
+                 <xpath expr='//field[@name="color"]' position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr='//kanban' position="attributes">
+                    <attribute name="colors">grey:id==503</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Kanban view of issue ends ==================================-->
+
+        <!--====================================== Kanban view of task begins ==================================-->
+        <record model="ir.ui.view" id="project_task_kanban">
+            <field name="name">project.task.kanban</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr='//kanban'  position="attributes">
+                   <attribute name="quick_create">0</attribute>
+                </xpath>
+                <xpath expr='//kanban//field[@name="project_id"]' position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr='//kanban//field[@name="date_deadline"]' position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr='//kanban//field[@name="project_id"]' position="after">
+                    <field name="partner_id"/><br/>
+                    <span style="color:green !important; font-weight:bold"><field name="cs_number_task"/></span><br/>
+                    <span style="color:darkred !important; font-weight:bold">
+                        <field name="uplink_date_task" attrs="{'invisible': ['|','|','|','|','|','|',('name','=','reconnection'),('name','=','disco'),('name','=','Shifting'),('name','=','survey'),('name','=','additional'),('name','=','Disable In SIS')]}"/><br/>
+                    </span>
+                    <span style="color:royalblue !important; font-weight:bold">
+                        <field name="contract" attrs="{'invisible': ['|','|','|','|','|','|',('name','=','reconnection'),('name','=','disco'),('name','=','Shifting'),('name','=','survey'),('name','=','additional'),('name','=','Disable In SIS')]}"/><br/>
+                    </span>
+                    <field name="create_date"/><br/>
+                    <span style="color:red !important; font-weight:bold">
+                        <field name="task_status_confirm"/>
+                    </span>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Kanban view of task ends ==================================-->
+    </data>
+</openerp>

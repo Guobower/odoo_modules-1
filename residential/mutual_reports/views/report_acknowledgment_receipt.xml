@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<openerp>
+    <data>
+       <template id="acknowledgement_receipt">
+           <t t-call='report.html_container'>
+               <t t-foreach="docs" t-as="account">
+                   <t>
+                      <div class="page">
+                          <div class="row">
+                              <h3>Acknowledgement Cheque/Cash</h3>
+                              <t t-if="account.address_criteria=='Monitoring Address'">
+                                  <div style="border:2px solid grey; padding:10px;border-radius:10px">
+                                      <span style="font-size:16px;">
+                                          <strong style="font-size:16px">Customer's Information:</strong><br/>
+                                          <span t-field="account.partner_id.name"/><br/>
+                                          <span t-if="account.partner_id.street">
+                                              <span t-field="account.partner_id.street"/><br/>
+                                          </span>
+                                          <!--<span t-if="account.partner_id.street2">-->
+                                              <!--<span t-field="account.partner_id.street2"/><br/>-->
+                                          <!--</span>-->
+                                          <span t-if="account.partner_id.city">
+                                              <span t-field="account.partner_id.city"/><br/>
+                                          </span>
+                                          <span t-if="account.partner_id.city">
+                                              <span t-field="account.partner_id.city"/><br/>
+                                          </span>
+                                          <span t-if="account.partner_id.phone">
+                                              <span t-field="account.partner_id.phone"/>
+                                          </span>
+                                          <span t-if="account.partner_id.mobile">
+                                              <span t-field="account.partner_id.mobile"/><br/>
+                                          </span>
+                                      </span>
+                                  </div>
+                              </t>
+                              <t t-if="account.address_criteria=='Mailing Address' or account.address_criteria==False">
+                                  <div style="border:2px solid grey; padding:10px;border-radius:10px">
+                                      <span style="font-size:16px;">
+                                          <strong style="font-size:16px">Customer's Information:</strong><br/>
+                                          <span t-field="account.partner_id.name"/><br/>
+                                          <span t-if="account.partner_id.c_street">
+                                              <span t-field="account.partner_id.c_street"/><br/>
+                                          </span>
+                                          <!--<span t-if="account.partner_id.c_street2">-->
+                                              <!--<span t-field="account.partner_id.c_street2"/><br/>-->
+                                          <!--</span>-->
+                                          <span t-if="account.partner_id.city">
+                                              <span t-field="account.partner_id.city"/><br/>
+                                          </span>
+                                          <span t-if="account.partner_id.city">
+                                              <span t-field="account.partner_id.city"/><br/>
+                                          </span>
+                                          <span t-if="account.partner_id.phone">
+                                              <span t-field="account.partner_id.phone"/>
+                                          </span>
+                                          <span t-if="account.partner_id.mobile">
+                                              <span t-field="account.partner_id.mobile"/><br/>
+                                          </span>
+                                      </span>
+                                  </div>
+                              </t>
+                              <t t-if="account.address_criteria=='Temporary Address'">
+                                  <div style="border:2px solid grey; padding:10px;border-radius:10px">
+                                      <span style="font-size:16px;">
+                                          <strong style="font-size:16px">Customer's Information:</strong><br/>
+                                          <span t-field="account.partner_id.name"/><br/>
+                                          <span t-if="account.partner_id.tempaddress">
+                                              <span t-field="account.partner_id.tempaddress"/><br/>
+                                          </span>
+                                          <span t-if="account.partner_id.city">
+                                              <span t-field="account.partner_id.city"/><br/>
+                                          </span>
+                                          <span t-if="account.partner_id.city">
+                                              <span t-field="account.partner_id.city"/><br/>
+                                          </span>
+                                          <span t-if="account.partner_id.phone">
+                                              <span t-field="account.partner_id.phone"/>
+                                          </span>
+                                          <span t-if="account.partner_id.mobile">
+                                              <span t-field="account.partner_id.mobile"/><br/>
+                                          </span>
+                                      </span>
+                                  </div>
+                              </t>
+                          </div>
+                          <div class="row mt32 mb32" style="font-size:16px">
+                              <div class="col-xs-2" t-if="account.date_invoice">
+                                  <strong>Invoice Date</strong>
+                                  <p t-field="account.date_invoice"/>
+                              </div>
+                              <div class="col-xs-2" t-if="account.date_invoice">
+                                  <strong>Invoice Number</strong>
+                                  <p t-field="account.number"/>
+                              </div>
+                              <div class="col-xs-2" t-if="account.css">
+                                  <strong>CS Number</strong>
+                                  <p t-field="account.css"/>
+                              </div>
+                              <div class="col-xs-2">
+                                  <strong>Receipt Date</strong>
+                                  <p>_____________</p>
+                              </div>
+                              <div class="col-xs-2">
+                                  <strong>Cheque no.</strong>
+                                  <p><t t-if="account.cheque_no">
+                                      <span t-field="account.cheque_no"/>
+                                  </t></p>
+                              </div>
+                          </div>
+                          <div style="font-size:16px;">
+                              <strong>Monitoring Period: </strong>
+                              <span t-if="account.from_date">
+                                  <span t-field="account.from_date"></span>
+                              </span> to
+                              <span t-if="account.to_date">
+                                  <span t-field="account.to_date"></span>
+                              </span>
+                          </div>
+                           <div style="font-size:16px;">
+                               <strong>Amount Due:</strong>
+                               <t t-if="account.grand_total > 0.0">
+                                   <t t-if="account.amount_total == account.residual">
+                                        <span t-esc="round(account.grand_total)"/>
+                                       PKR<br/>
+                                       (
+                                       <span>Amount In Words: <span t-esc="account.amount_to_text(round(account.grand_total),'euro')"/></span>
+                                       )
+                                   </t>
+                                   <t t-if="account.amount_total > account.residual">
+                                        <span t-esc="round(account.outstanding)"/>
+                                       PKR<br/>
+                                       (
+                                       <span>Amount In Words: <span t-esc="account.amount_to_text(round(account.outstanding),'euro')"/></span>
+                                       )
+                                   </t>
+                               </t>
+                               <t t-if="account.grand_total &lt; 0.0">
+                                   <t t-if="account.amount_total == account.residual">
+                                        <span t-esc="round(account.grand_total)"/>
+                                       PKR<br/>
+                                       (<small>
+                                       <span>Amount In Words: <span t-esc="account.amount_to_text(round(account.grand_total),'euro')"/></span>
+                                   </small>)
+                                   </t>
+                                   <t t-if="account.amount_total > account.residual and account.grand_total == account.amount_total">
+                                        <span t-esc="round(account.residual)"/>
+                                       PKR<br/>
+                                       (
+                                       <span>Amount In Words: <span t-esc="account.amount_to_text(round(account.residual),'euro')"/></span>
+                                       )
+                                   </t>
+                                   <t t-if="account.grand_total > account.amount_total">
+                                        <span t-esc="round(account.residual)"/>
+                                       PKR<br/>
+                                       (
+                                       <span>Amount In Words: <span t-esc="account.amount_to_text(round(account.grand_total),'euro')"/></span>
+                                       )
+                                   </t>
+                               </t>
+
+                           </div>
+                           <div><br/>
+                               <strong>Note: </strong><br/>
+                               <small>Dear subscriber please keep checking your "Alarm System Regularly,Weekly or Monthly" basis by using panic and other devices</small>
+                           </div>
+                           <div class="pull-right">
+                               <small>Prepared By <span t-esc="user.name"/> </small><br/>
+                               <small><span t-esc="context_timestamp(datetime.datetime.now()).strftime('%d-%m-%Y')"/></small>
+                           </div>
+                      </div>
+                   </t>
+               </t>
+           </t>
+       </template>
+    </data>
+</openerp>

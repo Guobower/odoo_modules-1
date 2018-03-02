@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+<template id="wiz_report_hmb_bop">
+    <t t-call="report.html_container">
+        <t t-foreach="docs" t-as="doc">
+            <t t-call="report.internal_layout">
+                <div class="page">
+                    <t t-set="hmb_total" t-value="0"/>
+                    <t t-set="bop_total" t-value="0"/>
+                    <t t-set="grand_total" t-value="0"/>
+                    <h1>Balance In Bank Accounts</h1><br/>
+                    <table class="table table-condensed" style="font-size:16px;">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th class="text-right">HMB Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr t-foreach="doc.cal_bal_hmb()" t-as="l">
+                                 <td>
+                                     <span t-esc="l['period']"/>
+                                 </td>
+                                 <td class="text-right">
+                                     <span t-esc="round(l['sum'])"/>
+                                     <t t-set="hmb_total" t-value="hmb_total+round(l['sum'])"/>
+                                 </td>
+                             </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-condensed" style="font-size:16px;">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th class="text-right">BOP Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr t-foreach="doc.cal_bal_bop()" t-as="l">
+                                 <td>
+                                     <span t-esc="l['period']"/>
+                                 </td>
+                                 <td class="text-right">
+                                     <span t-esc="round(l['sum'])"/>
+                                     <t t-set="bop_total" t-value="bop_total+round(l['sum'])"/>
+                                 </td>
+                             </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-condensed" style="font-size:16px;">
+                        <thead>
+                            <tr>
+                                <th>Month</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                             <tr t-foreach="doc.total()" t-as="l">
+                                 <td>
+                                     <span t-esc="l['period']"/>
+                                 </td>
+                                 <td class="text-right">
+                                     <span t-esc="round(l['total'])"/>
+                                       <t t-set="grand_total" t-value="grand_total+round(l['total'])"/>
+                                 </td>
+                             </tr>
+                        </tbody>
+                    </table>
+                    <h4>Grand Total</h4>
+                    <div style="border:2px solid grey; padding:10px;border-radius:10px;width:64%;font-size:16px;">
+                         <p><strong>HMB Total Amount: </strong><span t-esc="hmb_total"/></p>
+                         <p><strong>BOP Total Amount: </strong><span t-esc="bop_total"/></p>
+                         <p><strong>Grand Total Amount: </strong><span t-esc="grand_total"/></p>
+                    </div>
+                <br/>
+                </div>
+            </t>
+        </t>
+    </t>
+</template>
+</data>
+</openerp>

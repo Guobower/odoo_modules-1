@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <report
+                id="custom_report_acknowledgment_receipt"
+                model="account.invoice"
+                string="Print Acknowledgment Receipt"
+                report_type="qweb-pdf"
+                name="mutual_reports.acknowledgement_receipt"
+                attachment_use="False"
+                file="mutual_reports.acknowledgement_receipt"
+        />
+        <report
+                id="custom_report_issue_pdf"
+                model="project.issue"
+                string="Print Issue"
+                report_type="qweb-pdf"
+                name="mutual_reports.report_issue_pdf"
+                attachment_use="False"
+                file="mutual_reports.report_issue_pdf"
+        />
+
+         <report
+                id="custom_report_history_pdf"
+                model="project.issue"
+                string="Technician History"
+                report_type="qweb-pdf"
+                name="mutual_reports.report_history_pdf"
+                attachment_use="False"
+                file="mutual_reports.report_history_pdf"
+        />
+
+        <report
+                id="custom_report_task_pdf"
+                model="project.task"
+                string="Print Task"
+                report_type="qweb-pdf"
+                name="mutual_reports.report_task_pdf"
+                attachment_use="False"
+                file="mutual_reports.report_task_pdf"
+        />
+
+        <report
+                id="custom_quotation_pdf"
+                model="sale.order"
+                string="Monitoring Quotation"
+                report_type="qweb-pdf"
+                name="mutual_reports.custom_quotation"
+                attachment_use="False"
+                file="mutual_reports.custom_quotation"
+        />
+
+         <report
+                id="custom_additional_quotation_pdf"
+                model="sale.order"
+                string="Additional Quotation"
+                report_type="qweb-pdf"
+                name="mutual_reports.custom_additional_quotation"
+                attachment_use="False"
+                file="mutual_reports.custom_additional_quotation"
+        />
+
+        <report
+                id="custom_invoice_pdf"
+                model="account.invoice"
+                string="Monitoring Invoice"
+                report_type="qweb-pdf"
+                name="mutual_reports.custom_invoice"
+                attachment_use="False"
+                file="mutual_reports.custom_invoice"
+        />
+         <report
+                id="dummy_custom_invoice_pdf"
+                model="mutual.dummy.invoice"
+                string="Monitoring Invoice"
+                report_type="qweb-pdf"
+                name="mutual_reports.dummy_custom_invoice"
+                attachment_use="False"
+                file="mutual_reports.dummy_custom_invoice"
+        />
+
+         <report
+                id="sale_custom_invoice_pdf"
+                model="account.invoice"
+                string="Sales Tax Invoice"
+                report_type="qweb-pdf"
+                name="mutual_reports.custom_sale_invoice"
+                attachment_use="False"
+                file="mutual_reports.custom_sale_invoice"
+        />
+
+         <report
+                id="draft_custom_invoice_pdf"
+                model="account.invoice"
+                string="Draft Invoice"
+                report_type="qweb-pdf"
+                name="mutual_reports.custom_draft_invoice"
+                attachment_use="False"
+                file="mutual_reports.custom_draft_invoice"
+        />
+
+        <report
+                id="customer_details_pdf"
+                model="res.partner"
+                string="Customer Details"
+                report_type="qweb-pdf"
+                name="mutual_reports.customer_details"
+                attachment_use="False"
+                file="mutual_reports.customer_details"
+        />
+
+         <report
+            id="action_wiz_report"
+            model="wiz.reports"
+            string="Report"
+            report_type="qweb-pdf"
+            name="mutual_reports.wiz_report"
+            file="mutual_reports.wiz_report"
+            menu="False"
+        />
+
+        <report
+            id="action_wiz_report_hmb_bop"
+            model="wiz.hmb.bop.reports"
+            string="Report"
+            report_type="qweb-pdf"
+            name="mutual_reports.wiz_report_hmb_bop"
+            file="mutual_reports.wiz_report_hmb_bop"
+            menu="False"
+        />
+
+        <report
+            id="action_wiz_report_balances"
+            model="wiz.report.balances"
+            string="Report"
+            report_type="qweb-pdf"
+            name="mutual_reports.wiz_report_balances"
+            file="mutual_reports.wiz_report_balances"
+            menu="False"
+        />
+
+        <report
+                id="customer_address_pdf"
+                model="account.analytic.invoice.line"
+                string="Customer Address"
+                report_type="qweb-pdf"
+                name="mutual_reports.customer_address"
+                attachment_use="False"
+                file="mutual_reports.customer_address"
+        />
+
+    </data>
+</openerp>

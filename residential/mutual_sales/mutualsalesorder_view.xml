@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record model="ir.ui.view" id="sale.view_order_id">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="cs_number"/>
+                    <field name="payment_received"/>
+                    <field name="sale_confirm_date" readonly="1"/>
+                    <field name="status"/>
+                </xpath>
+                <xpath expr="//field[@name='client_order_ref']" position="after">
+                    <field name="terms_conditions"/>
+                    <field name="create_date" readonly="1"/>
+                    <field name="create_uid" readonly="1"/>
+                    <field name="approval"  groups="account.group_account_manager"/>
+                </xpath>
+                <xpath expr="//button[@string='Create Invoice']" position="attributes">
+                    <attribute name="groups">account.group_account_manager</attribute>
+                </xpath>
+                <xpath expr="//field[@name='order_line']" position="attributes">
+                    <attribute name="attrs">{'readonly': [('approval', '=', True)]}</attribute>
+                </xpath>
+                <notebook>
+                    <page string="Due Deligence" groups="base.group_sale_salesman_all_leads">
+                        <group col="4">
+                            <field name="behalf_of_customer" />
+                            <field name="How_much_you_paid"/>
+                            <field name="date"/>
+                        </group>
+                        <group style="margin-top:10px">
+                            <field name="ptcl_gsm" widget="radio" style="margin-top:20px"/>
+                            <field name="ptcl_inorder" widget="radio" style="margin-top:20px"/>
+                            <field name="bentel_gsm" widget="radio" style="margin-top:20px"/>
+                            <field name="owner_tenant" widget="radio" style="margin-top:20px"/>
+                            <field name="terms" widget="radio" style="margin-top:20px"/>
+                        </group>
+                        <group>
+                            <field name="remarks"/>
+                        </group>
+                    </page>
+                </notebook>
+                <notebook>
+                    <page string="Changes in Sales Order" groups="base.group_sale_salesman_all_leads">
+                        <group col="4">
+                            <field name="changes_description"/>
+                        </group>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+        <record id="view_order_tree" model="ir.ui.view">
+              <field name="name">sale.order.tree</field>
+              <field name="model">sale.order</field>
+              <field name="inherit_id" ref="sale.view_order_tree" />
+              <field name="arch" type="xml">
+                  <field name="partner_id" position="after">
+                      <field name="cs_number"/>
+                      <field name="payment_received"/>
+                  </field>
+              </field>
+        </record>
+        <record  model="ir.ui.view" id="_sales_order_filter">
+            <field name="name">sale.order.list.select</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter" />
+            <field name="arch" type="xml">
+                <search string="Search Sales Order">
+                     <group string="Custom Filter">
+                         <filter string="Payment Received" domain="[('payment_received','=',True)]"/>
+                         <filter string="Payment Not Received" domain="[('payment_received','=',False)]"/>
+                     </group>
+                </search>
+            </field>
+        </record>
+    </data>
+</openerp>

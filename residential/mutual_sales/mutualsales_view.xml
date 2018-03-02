@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="relatives_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Customer Relatives</field>
+            <field name="res_model">customer.relatives</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem
+            name="Customer Relatives"
+            action="relatives_open_project_attachment_view"
+            id="menu_relatives_open_project_attachment_view"
+            sequence="7"
+            parent="base.menu_sales">
+        </menuitem>
+        <record id="customer_relatives_form_view" model="ir.ui.view">
+            <field name="name">customer_relatives.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">customer.relatives</field>
+            <field name="arch" type="xml">
+                <form string="customer_relatives">
+                    <sheet>
+                        <group string="Customer Relatives">
+                            <group>
+                                 <field name="customer_r"/>
+                                 <field name="relative"/>
+                                 <field name="relationship"/>
+                            </group>
+                            <group>
+                                <field name="contact_1"/>
+                                <field name="contact_2"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="cs_id">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field string="CS Number" name="cs_number"  placeholder="CS Number" />
+                    <field name="cs_category" string="CS Category"/>
+                    <field string="Uplink Date" name="uplink_date"  placeholder="Uplink Date" />
+                    <field name="customer_status" readonly="1"/>
+                </field>
+                <field name="title" position="after">
+                    <field name="application_user"/>
+                    <field name="visit"/>
+                    <field name="is_employee" attrs="{'invisible': [('customer','=',True)]}"/>
+                    <field name="department" attrs="{'invisible': [('is_employee','=',False)]}"/>
+                    <!--<field name="is_technician" attrs="{'invisible': [('customer','=',True)]}"/>
+                    <field name="is_rider" attrs="{'invisible': [('customer','=',True)]}"/>-->
+                </field>
+                <field name="function" position="after">
+                    <field name="office"/>
+                </field>
+                <xpath expr="//field[@name='website']" position="after">
+                    <field name="contactperson"/>
+                    <field name="contactpersondetails"/>
+                    <field name="tempaddress"/>
+                </xpath>
+                <xpath expr="//field[@name='company_id']" position="after">
+                    <field name="create_date" readonly="1"/>
+                    <field name="create_uid" readonly="1"/>
+                </xpath>
+                <xpath expr="//field[@name='website']" position="before">
+                    <field name="force_details"/>
+                </xpath>
+                <label for="street" string="Address" position="replace">
+                    <label for="street" string="Monitoring Address" />
+                </label>
+                <xpath expr="//form/sheet/group" position="after" >
+                    <group>
+                        <label for="c_street" string='Correspondences Address'></label>
+                            <div>
+                                <field name="c_street" placeholder="Street..."/>
+                                <field name="c_street2"/>
+                                <div class="address_format">
+                                    <field name="c_city" placeholder="City" style="width: 40%%"/>
+                                    <field name="c_state_id" on_change="onchange_state(state_id)" options='{"no_open": True}' placeholder="State" style="width: 24%%"/>
+                                    <field name="c_zip" placeholder="ZIP" style="width: 34%%"/>
+                                </div>
+                                <field name="c_country_id" placeholder="Country" options='{"no_open": True, "no_create": True}'/>
+                            </div>
+                    </group>
+                    <group>
+                    <lable><h3 style="margin-top:10px">For CEO use only</h3></lable>
+                    <br/><field name="disco"/>
+                    <field name="reco"/>
+                    </group>
+                </xpath>
+                <notebook>
+                    <page string="Personal Info" groups="account.group_account_manager">
+                        <label for="nic_num">CNIC Number</label>
+                        <field string="Nic Card Number" name="nic_num"  placeholder="44204-1234567-8" />
+                        <label for="ntn_num">NTN Number</label>
+                        <field string="NTN Number" name="ntn_num"  placeholder="1234567-1" />
+                        <label for="gst_num">GST Number</label>
+                        <field string="GST Number" name="gst_num"  placeholder="1234567-1" />
+                        <label for="credit_card_no">Credit Card Number</label>
+                        <field string="Credit Card Number" name="credit_card_no"  placeholder="14444444444444" />
+                        <label for="credit_card_exp_date">Credit Card Exipry Date</label>
+                        <field string="Expiry Date" name="credit_card_exp_date"  placeholder="Expiry Date" />
+                    </page>
+                </notebook>
+                <notebook>
+                    <page string="Relatives Info" >
+                          <field name="customer_relatives" colspan="4" nolabel="1">
+                            <tree editable="top" string="Relative">
+                                 <field name="relative"/>
+                                 <field name="relationship"/>
+                                 <field name="contact_1"/>
+                                 <field name="contact_2"/>
+                            </tree>
+                          </field>
+                    </page>
+                </notebook>
+            </field>
+        </record>
+       <!--==========================Search View Begins=============================-->
+        <record  model="ir.ui.view" id="view_res_partner_filter">
+            <field name="name">res.partner.select</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='name']" position="before">
+                    <field name="cs_number"/>
+                </xpath>
+                <xpath expr="//search/field[@name='name']" position="after">
+                    <!--<field name="mobile" />-->
+                    <field name="phone" filter_domain="['|','|',('phone','ilike',self),('mobile','ilike',self),('office','ilike',self)]" />
+                    <field name="department"/>
+                    <field name="street"/>
+                    <field name="email"/>
+                    <field name="payment_next_action" />
+                    <field name="payment_responsible_id" />
+                </xpath>
+                <search string="Search Partner">
+                     <group string="Custom Filter">
+                         <filter string="Active" domain="[('active','=',True)]"/>
+                         <filter string="Inactive" domain="[('active','=',False)]"/>
+                         <filter string="Disco" domain="[('active','=',False),('cs_number','!=',False)]"/>
+                         <filter string="Mobile application User" domain="[('application_user','=',True)]"/>
+                     </group>
+                     <group string="Uplink day/month">
+                        <filter string="Uplink By Day" context="{'group_by':'uplink_date:day'}" />
+                        <filter string="Uplink By Month" context="{'group_by':'uplink_date:month'}" />
+                        <filter string="Uplink By Year" context="{'group_by':'uplink_date:year'}" />
+                    </group>
+                    <group string="Employee">
+                        <filter string="Is Employee"  domain="[('is_employee','=',True)]"/>
+                    </group>
+                    <group string="Department">
+                        <filter string="Technical"  domain="[('department','=','Technical')]"/>
+                        <filter string="Rider"  domain="[('department','=','Rider')]"/>
+                        <filter string="Recovery Officer"  domain="[('department','=','Recovery Officer')]"/>
+                        <filter string="IT"  domain="[('department','=','IT')]"/>
+                        <filter string="Accounts"  domain="[('department','=','Accounts')]"/>
+                        <filter string="Sales"  domain="[('department','=','Sales')]"/>
+                        <filter string="CMS"  domain="[('department','=','CMS')]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+         <!--==========================Search View Ends=============================-->
+        <!--====================================== List view of customer form for metrics Begins ====================-->
+        <record id="mutual_customer_tree" model="ir.ui.view">
+              <field name="name">res.partner.tree</field>
+              <field name="model">res.partner</field>
+              <field name="inherit_id" ref="base.view_partner_tree" />
+              <field name="arch" type="xml">
+                  <xpath expr="//tree[@string='Contacts']" position="attributes">
+                      <attribute name="default_order">uplink_date desc</attribute>
+                  </xpath>
+                  <field name="phone" position="after">
+                      <!--<field name="mobile"/>-->
+                      <field name="cs_number"/>
+                      <!--<field name="street"/>-->
+
+                      <!--<field name="city"/>-->
+                      <field name="uplink_date"/>
+                      <field name="active"/>
+                      <field name="application_user"/>
+                  </field>
+                  <xpath expr="//field[@name='application_user']" position="attributes">
+                      <attribute name="string">App User</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='email']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                   <xpath expr="//field[@name='phone']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+              </field>
+        </record>
+         <!--====================================== List view of customer form for metrics Ends ===================-->
+
+        <!--====================================== List view of res.user Begins ==================================-->
+        <record id="mutual_view_users_tree" model="ir.ui.view">
+              <field name="name">res.users.tree</field>
+              <field name="model">res.users</field>
+              <field name="inherit_id" ref="base.view_users_tree" />
+              <field name="arch" type="xml">
+                  <field name="name" position="after">
+                      <field name="city"/>
+                      <field name="mobile"/>
+                  </field>
+              </field>
+        </record>
+        <!--====================================== List view of res.user Ends ==================================-->\
+        <record model="ir.ui.view" id="crm.crm_case_kanban_view_leads_mutual">
+            <field name="name">CRM - Leads Kanban</field>
+            <field name="model">crm.lead</field>
+            <field name="inherit_id" ref="crm.crm_case_kanban_view_leads"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="after"><br/>
+                     <span style="color:royalblue;">
+                         <strong><field name="user_id"/></strong>
+                     </span>
+                </field>
+            </field>
+        </record>
+
+         <record id="mutual_filter" model="ir.ui.view">
+              <field name="name">sale.order.list.select</field>
+              <field name="model">sale.order</field>
+              <field name="inherit_id" ref="sale.view_sales_order_filter" />
+              <field name="arch" type="xml">
+                  <field name="name" position="before">
+                      <field name="cs_number"/>
+                  </field>
+              </field>
+        </record>
+
+        <!--====================================== Kanban view of partner begins ==================================-->
+        <record model="ir.ui.view" id="base.res_partner_kanban">
+            <field name="name">res.partner.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr='//kanban/templates/t/div/div/h4/a/field[@name="display_name"]' position="after">
+                    <br/><span style="color:grey;"><field name="cs_number"/></span>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Kanban view of partner ends ==================================-->
+
+         <record model="ir.ui.view" id="followups_id">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="payment_responsible_id" position="after">
+                    <field name="riders" />
+                    <field name="payment_received"/>
+                </field>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="account_followup.customer_followup_tree_mutual">
+            <field name="name">res.partner.followup.inherit.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account_followup.customer_followup_tree" />
+            <field name="arch" type="xml">
+                <field name="payment_responsible_id" position="after">
+                    <field name="riders" />
+                    <field name="payment_received"/>
+                </field>
+                <xpath expr="//field[@name='latest_followup_level_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='display_name']" position="after">
+                    <field name="cs_number"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>
