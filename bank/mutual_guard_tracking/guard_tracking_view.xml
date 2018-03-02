@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<openerp>
+    <data>
+        <menuitem name="Guard Tracking" id="guard_tracking_top_menu" sequence="50"/>
+        <menuitem name="Guard Tracking" id="guard_tracking_side_top_menu" parent="guard_tracking_top_menu" sequence="10"/>
+
+        <record id="mutual_device_tracking" model="ir.actions.act_window">
+	        <field name="name">Device Tracking</field>
+            <field name="res_model">mutual.device.tracking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem name="Scanner Holders" action="mutual_device_tracking" id="menu_mutual_device_tracking" sequence="10" parent="guard_tracking_side_top_menu"/>
+
+        <!-- ================================================== Begin Form view of Scanner Holders ================================================ -->
+        <record id="form_device_tracking" model="ir.ui.view">
+            <field name="name">view.device.tracking</field>
+            <field name="model">mutual.device.tracking</field>
+            <field name="arch" type="xml">
+                <form string="Scanner Holders" version="8.0">
+                    <sheet>
+                        <group string="Scanner Holders">
+                            <field name="scanner_id"/>
+                            <field name="force_id"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- ================================================== End Form view of Scanner Holders ================================================ -->
+
+        <!-- ================================================== Begin tree view of Scanner Holders ================================================ -->
+        <record id="tree_device_tracking" model="ir.ui.view">
+            <field name="name">view.device.tracking</field>
+            <field name="model">mutual.device.tracking</field>
+            <field name="arch" type="xml">
+                <tree string="Scanner Holders" version="8.0">
+                    <field name="scanner_id"/>
+                    <field name="force_id"/>
+                </tree>
+            </field>
+        </record>
+        <!-- ================================================== End tree view of Scanner Holders ================================================ -->
+
+        <!-- ================================================== Begin Search view of Scanner Holders ================================================ -->
+        <record id="search_device_tracking" model="ir.ui.view">
+            <field name="name">view.device.tracking</field>
+            <field name="model">mutual.device.tracking</field>
+            <field name="arch" type="xml">
+                <search string="Scanner Holders" version="8.0">
+                    <field name="scanner_id"/>
+                    <field name="force_id"/>
+                </search>
+            </field>
+        </record>
+        <!-- ================================================== End Search view of Scanner Holders ================================================ -->
+
+        <record id="mutual_guard_tracking" model="ir.actions.act_window">
+	        <field name="name">Guard Tracking</field>
+            <field name="res_model">mutual.guard.tracking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_signal_status':'inactive'}</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem name="Guard Patrolling" action="mutual_guard_tracking" id="menu_mutual_guard_tracking" sequence="20" parent="guard_tracking_side_top_menu"/>
+
+        <menuitem name="Missing Visits" action="action_form_missing_visits" id="menu_action_form_missing_visits" sequence="30" parent="guard_tracking_side_top_menu"/>
+
+        <!-- ================================================== Begin Form view of Guard Patrolling ================================================ -->
+        <record id="form_guard_tracking" model="ir.ui.view">
+            <field name="name">view.guard.tracking</field>
+            <field name="model">mutual.guard.tracking</field>
+            <field name="arch" type="xml">
+                <form string="Guard Patrolling" version="8.0">
+                    <sheet>
+                        <!--<header>-->
+                            <!--<button type="action" name="%(action_form_missing_visits)d" string="Missing Visits" icon="gtk-execute"/>-->
+                        <!--</header>-->
+                        <group string="Guard Patrolling">
+                            <group>
+                                <field name="bank"/>
+                                <field name="bank_code"/>
+                                <field name="branch_code"/>
+                                <field name="address"/>
+                                <field name="city"/>
+                                <field name="archive_signal"/>
+                                <field name="device_no"/>
+                                <field name="card_no"/>
+                            </group>
+                            <group>
+                                <field name="visit_time"/>
+                                <field name="visit_time_two"/>
+                                <field name="visit_date"/>
+                                <field name="visit_date_two"/>
+                                <field name="remarks"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- ================================================== End Form view of Guard Patrolling ================================================ -->
+
+        <!-- ================================================== Begin tree view of Guard Patrolling ================================================ -->
+        <record id="tree_guard_tracking" model="ir.ui.view">
+            <field name="name">view.guard.tree.tracking</field>
+            <field name="model">mutual.guard.tracking</field>
+            <field name="arch" type="xml">
+                <tree string="Guard Patrolling" version="8.0" editable="top">
+                    <field name="bank_code" readonly="1"/>
+                    <field name="branch_code" readonly="1"/>
+                    <field name="address" readonly="1"/>
+                    <field name="city" readonly="1"/>
+                    <field name="visit_time"/>
+                    <field name="visit_date" readonly="1"/>
+                    <field name="visit_time_two"/>
+                    <field name="visit_date_two" readonly="1"/>
+                    <field name="remarks"/>
+                    <field name="force_code" readonly="1"/>
+                    <field name="device_no" readonly="1"/>
+                    <!--<field name="card_no"/>-->
+                </tree>
+            </field>
+        </record>
+        <!-- ================================================== End tree view of Guard Patrolling ================================================ -->
+
+        <!-- ================================================== Begin Search view of Guard Patrolling ================================================ -->
+        <record id="search_view_guard_tracking" model="ir.ui.view">
+            <field name="name">view.guard.search.tracking</field>
+            <field name="model">mutual.guard.tracking</field>
+            <field name="arch" type="xml">
+                <search string="Guard Patrolling" version="8.0">
+                    <field name="bank_code"/>
+                    <field name="visit_date" />
+                    <field name="branch_code"/>
+                    <field name="city"/>
+                    <field name="force_code"/>
+                    <group string="Visits">
+                        <filter name="visit_date" string="Only Missed One Visit" domain="[('visit_date','!=',False),('visit_date_two','=',False)]"/>
+                        <filter name="visit_date" string="Both Visits Missed" domain="[('visit_date','=',False),('visit_date_two','=',False)]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- ================================================== End Search view of Guard Patrolling ================================================ -->
+
+   <!-- ================================================== Begin sms Logs view of Guard Patrolling ================================================ -->
+         <record id="mutual_sms_logs" model="ir.actions.act_window">
+	        <field name="name">Sms Logs</field>
+            <field name="res_model">sms.logs</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,graph</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem name="SMS LOGS" action="mutual_sms_logs" id="menu_mutual_sms_logs" sequence="140" parent="guard_tracking_side_top_menu"/>
+
+          <!-- ================================================== Begin tree view of sms lOGS ================================================ -->
+        <record id="tree_sms_logs" model="ir.ui.view">
+            <field name="name">view.sms.logs</field>
+            <field name="model">sms.logs</field>
+            <field name="arch" type="xml">
+                <tree string="SMS Logs" version="8.0">
+                    <field name="card_id" readonly="1"/>
+                    <field name="device_id" readonly="1"/>
+                    <field name="date" readonly="1"/>
+                    <field name="time" readonly="1"/>
+                    <field name="sys_date" readonly="1"/>
+
+                </tree>
+            </field>
+        </record>
+            <!-- ================================================== End tree view of sms lOGS ================================================ -->
+<!-- ================================================== Begin Search view of Sms LOGS================================================ -->
+        <record id="search_guard_tracking" model="ir.ui.view">
+            <field name="name">view.search.sms.logs</field>
+            <field name="model">sms.logs</field>
+            <field name="arch" type="xml">
+                <search string="SMS Logs" version="8.0">
+                    <field name="card_id" readonly="1"/>
+                    <field name="device_id" readonly="1"/>
+                    <field name="date" readonly="1"/>
+                    <field name="time" readonly="1"/>
+                    <field name="sys_date" readonly="1"/>
+                </search>
+            </field>
+        </record>
+        <!-- ================================================== End Search view of Guard Patrolling ================================================ -->
+
+           <!-- ================================================== Begin GRAPH view of sms lOGS ================================================ -->
+        <record id="graph_sms_logs" model="ir.ui.view">
+            <field name="name">view.sms.logs</field>
+            <field name="model">sms.logs</field>
+            <field name="arch" type="xml">
+                <graph string="SMS logs" version="8.0">
+                    <field name="card_id" readonly="1"/>
+                    <field name="device_id" readonly="1"/>
+                    <field name="date" readonly="1"/>
+                    <field name="time" readonly="1"/>
+                </graph>
+            </field>
+        </record>
+        <!-- ================================================== End GRAPH view of sms lOGS ================================================ -->
+    </data>
+</openerp>

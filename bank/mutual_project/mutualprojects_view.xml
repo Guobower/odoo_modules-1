@@ -1,0 +1,1252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <!--========================================================= Child Menu of Parent MenuItem for Basic Package Begins ================================================-->
+        <record id="product_items_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Basic Packages</field>
+            <field name="res_model">product.items</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Product Items"
+            action="product_items_open_project_attachment_view"
+            id="menu_product_items_open_project_attachment_view"
+            sequence="3"
+            parent="basic_packages_menu_old_time_open_project_attachment_view">
+        </menuitem>
+         <record id="product_items_form_view" model="ir.ui.view">
+            <field name="name">product_items.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">product.items</field>
+            <field name="arch" type="xml">
+                <form string="Product Items">
+                    <sheet>
+                        <group string="Product Items">
+                            <group>
+                                <field name="name" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products">
+                                <field name="product_lines" colspan="4" nolabel="1">
+                                    <tree editable="top" string="Items">
+                                        <field name="products" required="True"/>
+                                        <field name="quantity" required="True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+         </record>
+         <!--========================================================= Parent MenuItem for Basic Package Begins ================================================-->
+        <menuitem
+            name="Other Information"
+            id="basic_packages_menu_old_time_open_project_attachment_view"
+            sequence="3"
+            parent="base.menu_main_pm" />
+        <!--========================================================= Parent MenuItem for Basic Package End ================================================-->
+
+         <!--========================================================= Child Menu of Parent MenuItem for Basic Package Begins ================================================-->
+        <record id="basic_package_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Basic Packages</field>
+            <field name="res_model">basic.package</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+
+        <!--<menuitem-->
+            <!--name="Basic Package"-->
+            <!--action="basic_package_open_project_attachment_view"-->
+            <!--id="menu_basic_package_open_project_attachment_view"-->
+            <!--sequence="1"-->
+            <!--parent="basic_packages_menu_old_time_open_project_attachment_view">-->
+        <!--</menuitem>-->
+
+         <record id="basic_package_form_view" model="ir.ui.view">
+            <field name="name">basic_package.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">basic.package</field>
+            <field name="arch" type="xml">
+                <form string="Basic Package">
+                    <sheet>
+                        <group string="Basic Package">
+                            <group>
+                                <field name="bank" options="{'limit': 0, 'create': false, 'create_edit': false}" />
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products">
+                                <field name="product_lines" colspan="4" nolabel="1">
+                                    <tree editable="top" string="Items">
+                                        <field name="products" required="True"/>
+                                        <field name="quantity" required="True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+         </record>
+        <record id="basic_package_tree_view" model="ir.ui.view">
+            <field name="name">basic_package.tree.view</field>
+            <field name="view_type">tree</field>
+            <field name="model">basic.package</field>
+            <field name="arch" type="xml">
+                <tree string="Basic Package">
+                    <field name="bank"/>
+                </tree>
+            </field>
+         </record>
+
+         <!--========================================================= Child Menu of Parent MenuItem for Courier Sheet Begins ================================================-->
+        <record id="courier_sheet_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Courier Sheet</field>
+            <field name="res_model">courier.sheet</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Courier Sheet"
+            action="courier_sheet_open_project_attachment_view"
+            id="menu_courier_sheet_open_project_attachment_view"
+            sequence="2"
+            parent="basic_packages_menu_old_time_open_project_attachment_view">
+        </menuitem>
+
+         <record id="courier_sheet_form_view" model="ir.ui.view">
+            <field name="name">courier_sheet.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">courier.sheet</field>
+            <field name="arch" type="xml">
+                <form string="Courier Sheet">
+                    <header>
+                        <button name="validate" type="object" string="Validate" class="oe_highlight" />
+                        <button name="cancel" type="object" string="Cancel" class="oe_highlight" />
+                        <field name="state" widget="statusbar" statusbar_visible="draft,confirmed" statusbar_colors='{"draft":"blue","confirmed":"blue"}'/>
+                    </header>
+                    <sheet>
+                        <group string="Courier Sheet">
+                            <group>
+                                <field name="partner_id" options="{'limit': 0, 'create': false, 'create_edit': false}" string="Customer/Technician"/>
+                                <field name="cs_number"/>
+                                <field name="branch_code"/>
+                                <field name="bank_code"/>
+                                <field name="monitoring_address" string="Address"/>
+                                <field name="city"/>
+                                <!--<field name="technician_name"/>-->
+                                <!--<field name="location" />-->
+                            </group>
+                            <group>
+                                <field name="date"/>
+                                <field name="complaint_reference"/>
+                                <field name="tcs_receipt"/>
+                                <field name="remarks"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Products">
+                                <field name="product_lines" colspan="4" nolabel="1">
+                                    <tree editable="top" string="Items">
+                                        <field name="courier_sheet_products" required="True"/>
+                                        <!--<field name="type" />-->
+                                        <!--<field name="ref_to"/>-->
+                                        <field name="quantity" required="True"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+         </record>
+        <record id="courier_sheet_tree_view" model="ir.ui.view">
+            <field name="name">courier_sheet.tree.view</field>
+            <field name="view_type">tree</field>
+            <field name="model">courier.sheet</field>
+            <field name="arch" type="xml">
+                <tree string="Courier Sheet">
+                    <field name="date"/>
+                    <field name="bank_code"/>
+                    <field name="cs_number"/>
+                    <field name="branch_code"/>
+                    <field name="monitoring_address" string="Address"/>
+                    <field name="devices"/>
+                    <field name="qty"/>
+                    <!--<field name="ref"/>-->
+                    <field name="city"/>
+                    <field name="state"/>
+                    <field name="tcs_receipt"/>
+                    <field name="remarks"/>
+                </tree>
+            </field>
+         </record>
+         <record id="courier_sheet_search_view" model="ir.ui.view">
+            <field name="name">courier_sheet.search.view</field>
+            <field name="view_type">tree</field>
+            <field name="model">courier.sheet</field>
+            <field name="arch" type="xml">
+                <search string="Courier Sheet">
+                    <field name="cs_number"/>
+                    <field name="branch_code"/>
+                    <field name="bank_code"/>
+                    <field name="tcs_receipt"/>
+                     <field name="date"/>
+                    <field name="monitoring_address"/>
+                    <field name="city"/>
+                    <field name="complaint_reference"/>
+                    <field name="remarks"/>
+                </search>
+            </field>
+         </record>
+ <!--========================================================= Courier Sheet ENds  ================================================-->
+
+
+        <!--========================================================= Parent MenuItem for Customer Inventory Report Begins ================================================-->
+        <menuitem
+            name="Reports"
+            id="report_menu_old_time_open_project_attachment_view"
+            sequence="2"
+            parent="base.menu_main_pm" />
+        <!--========================================================= Parent MenuItem for Customer Inventory Report End ================================================-->
+
+        <menuitem
+            name="Customer Inventory"
+            action="action_customer_form_wiz_inventory"
+            id="menu_customer_inventory_project_attachment_view"
+            sequence="1"
+            parent="report_menu_old_time_open_project_attachment_view">
+        </menuitem>
+
+        <menuitem
+            name="Technician Inventory"
+            action="action_technician_form_wiz_inventory"
+            id="menu_technician_inventory_project_attachment_view"
+            sequence="2"
+            parent="report_menu_old_time_open_project_attachment_view">
+        </menuitem>
+
+
+        <record id="tech_attendance" model="ir.actions.act_window">
+	        <field name="name">Technician Attendance</field>
+            <field name="res_model">mark.attendance</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Technician Attendance"
+            action="tech_attendance"
+            id="menu_tech_attendance"
+            sequence="3"
+            parent="report_menu_old_time_open_project_attachment_view">
+        </menuitem>
+
+        <!--========================================================= Old Time Begins ================================================-->
+        <record id="old_time_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Old TimeInOut</field>
+            <field name="res_model">old.time</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Old TimeIn/Out"
+            action="old_time_open_project_attachment_view"
+            id="menu_old_time_open_project_attachment_view"
+            sequence="60"
+            parent="project.menu_project_management">
+        </menuitem>
+
+         <record id="technician_attendance_tree_view" model="ir.ui.view">
+            <field name="name">technician_attendance_tree.view</field>
+            <field name="view_type">tree</field>
+            <field name="model">mark.attendance</field>
+            <field name="arch" type="xml">
+                <tree string="Technician Attendance" editable="top">
+                    <field name="employee_id"/>
+                    <field name="check_in_view"/>
+                    <field name="status"/>
+                </tree>
+            </field>
+        </record>
+
+           <!-- ================================================== Begin Search view of attendance ================================================ -->
+        <record id="technician_attendance_search_view" model="ir.ui.view">
+            <field name="name">technician_attendance_search.view</field>
+            <field name="model">mark.attendance</field>
+            <field name="arch" type="xml">
+                <search string="Attendance Search" version="8.0" >
+                    <field name="employee_id" string="Name"/>
+                    <field name="status"/>
+					<group string="Group By">
+                        <filter string="Today" domain="[('check_in_view', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('check_in_view', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                        <filter string="By Day" context="{'group_by':'check_in_view:day'}" />
+                        <filter string="By Month" context="{'group_by':'check_in_view:month'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+        <!-- ================================================== End Search view of attendance ================================================ -->
+
+
+        <record id="old_time_tree_view" model="ir.ui.view">
+            <field name="name">old_time_tree.view</field>
+            <field name="view_type">tree</field>
+            <field name="model">old.time</field>
+            <field name="arch" type="xml">
+                <tree string="Old TimeIn/Out">
+                    <field name="date"/>
+                    <field name="name"/>
+                    <field name="cs"/>
+                    <field name="timein"/>
+                    <field name="timeout"/>
+                    <field name="status1"/>
+                    <field name="status2"/>
+                    <field name="bas"/>
+                    <field name="branch"/>
+                </tree>
+            </field>
+        </record>
+
+        <record  model="ir.ui.view" id="old_time_log_search">
+             <field name="name">Old Time Search</field>
+             <field name="model">old.time</field>
+             <field name="arch" type="xml">
+                <search string="Search Logs">
+                    <field name="cs"/>
+                    <field name="branch"/>
+                    <field name="name"/>
+                </search>
+             </field>
+         </record>
+
+        <record model="ir.ui.view" id="guard_tracking_tree">
+            <field name="name">Guard Tracking</field>
+            <field name="view_type">tree</field>
+            <field name="model">guard.tracking</field>
+            <field name="arch" type="xml">
+                <tree string="Guard Tracking" >
+                    <field name="branch_code" />
+                    <field name="customer" />
+                </tree>
+            </field>
+        </record>
+
+          <!--======================================================================= Guard Tracking Ends =================================================================================================-->
+
+        <record id="message_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Low Battery Messages</field>
+            <field name="res_model">low.messages</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Low Battery / Other SMS"
+            action="message_open_project_attachment_view"
+            id="menu_message_open_project_attachment_view"
+            sequence="40"
+            parent="project.menu_project_management">
+        </menuitem>
+
+        <record id="battery_messages_form_view" model="ir.ui.view">
+            <field name="name">battery_messages.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">low.messages</field>
+            <field name="arch" type="xml">
+                <form string="battery_messages">
+                    <sheet>
+                        <group string="Low Battery / Other Messages">
+                            <group>
+                                <field name="bank" options="{'limit': 0, 'create': false, 'create_edit': false}" attrs="{'invisible': [('technician','=',True)],'required': [('technician', '=', False)]}"/>
+                                <field name="employee_name"  options="{'limit': 2, 'create': false, 'create_edit': false}" attrs="{'invisible': [('technician','=',False)],'required': [('technician', '=', True)]}"/>
+                            </group>
+                            <group>
+                                <field name="technician"/>
+                                <field name="cs"  attrs="{'invisible': [('technician','=',True)]}"/>
+                                <field name="branch_code" attrs="{'invisible': [('technician','=',True)]}"/>
+                            </group>
+                            <group>
+                                <field name="address" attrs="{'invisible': [('technician','=',True)]}"/>
+                            </group>
+                        </group>
+                        <separator string="SMS"/>
+                        <group>
+                            <field name="number"/>
+                        </group>
+                        <group>
+                            <field name="sms"/>
+                        </group>
+                        <group>
+                            <button name="smsSent" string="Sent" type="object" class="btn-link"  />
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+         <record model="ir.ui.view" id="battery_message_tree">
+            <field name="name">Battery Message</field>
+            <field name="view_type">tree</field>
+            <field name="model">low.messages</field>
+            <field name="arch" type="xml">
+                <tree string="Messages" >
+                    <field name="bank" />
+                    <field name="cs" />
+                    <field name="branch_code" />
+                    <field name="number" />
+                    <field name="create_uid"/>
+                </tree>
+            </field>
+         </record>
+
+
+         <!-- =========================== Issues Logs Begins ================================ -->
+        <record id="tech_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Issues Logs</field>
+            <field name="res_model">tech.activities.issues</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem
+            name="Issues TimeIn/Out Activities"
+            action="tech_open_project_attachment_view"
+            id="menu_tech_open_project_attachment_view"
+            sequence="30"
+            parent="project.menu_project_management">
+        </menuitem>
+        <record id="tech_activities_form_view" model="ir.ui.view">
+            <field name="name">tech_activities.form.view</field>
+            <field name="view_type">form</field>
+            <field name="domain">[('gender','=','female')]</field>
+            <field name="model">tech.activities.issues</field>
+            <field name="arch" type="xml">
+                <form string="tech_activities">
+                    <sheet>
+                        <group string="Technician Activities">
+                            <group>
+                                 <field name="technician_name"/>
+                                 <field name="tech_name"/>
+                                 <field name="total_time"/>
+                            </group>
+                            <group>
+                                 <field name="reason"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- =========================== Issues Logs Ends ================================ -->
+
+         <record model="ir.ui.view" id="project_issue_activities">
+             <field name="name">Technician Issues History</field>
+             <field name="view_type">tree</field>
+             <field name="model">tech.activities.issues</field>
+             <field name="arch" type="xml">
+                <tree string="Technician Activities" editable="top" default_order="date_start asce">
+                    <field name="issue_id" readonly="1"/>
+                    <field name="bank_code" readonly="1"/>
+                    <field name="cs_number" readonly="1"/>
+                    <field name="branch_code" readonly="1"/>
+                    <field name="monitoring_address_issue" readonly="1"/>
+                    <field name="tech_name" readonly="1"/>
+                    <field name="technician_name"/>
+                    <field name="multi_tech" widget="many2many_tags"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="compute_total_time" readonly="1"/>
+                    <field name="reason"/>
+                    <field name="systemstatus"/>
+                    <field name="bas" attrs="{'required': [('compute_total_time', '!=', False)]}"/>
+                    <!--<field name="sim_status" attrs="{'required': [('compute_total_time', '!=', False)]}"/>-->
+                    <!--<field name="pending" attrs="{'required': [('compute_total_time', '!=', False)]}"/>-->
+                    <!--<field name="first_signal"/>-->
+                    <field name="status" class="demo"/>
+                    <field name="create_date"  readonly="1"/>
+                    <!--<field name="complaint_source"/>-->
+                </tree>
+             </field>
+         </record>
+
+         <record model="ir.ui.view" id="timein/out_issues">
+            <field name="name">Technician Issues History</field>
+            <field name="model">tech.activities.issues</field>
+            <field name="inherit_id" ref="mutual_project.project_issue_activities" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='multi_tech']" position="attributes">
+                    <attribute name="string">Combine with</attribute>
+                </xpath>
+                <xpath expr="//field[@name='issue_id']" position="attributes">
+                    <attribute name="string">C#</attribute>
+                </xpath>
+            </field>
+        </record>
+
+         <record  model="ir.ui.view" id="Issues_log_Search">
+             <field name="name">Issues log Search</field>
+             <field name="model">tech.activities.issues</field>
+             <field name="arch" type="xml">
+                <search string="Search Logs">
+                    <field name="cs_number"/>
+                    <field name="branch_code"/>
+                    <field name="bank_code"/>
+                    <field name="issue_id"/>
+                    <field name="technician_name" filter_domain="['|',('technician_name','ilike',self),('multi_tech','ilike',self)]"/>
+                    <field name="multi_tech"/>
+                    <field name="reason"/>
+                    <group string="Custom Filter">
+                        <filter string="Create Day" context="{'group_by':'create_date:day'}" />
+                        <filter string="Create Month" context="{'group_by':'create_date:month'}" />
+                        <filter string="Today TimeIn" domain="[('date_start', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date_start', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                        <filter string="TimeIn by day" context="{'group_by':'date_start:day'}" />
+                        <filter string="No TimeIn" domain="[('date_start','=',False)]"/>
+                        <filter string="No TimeOut" domain="[('date_end','=',False)]"/>
+                        <filter string="No TimeIn/Out" domain="[('date_start','=',False),('date_end','=',False)]"/>
+                    </group>
+                    <group string="Complaint Sources">
+                        <filter name="complaint_source" string="By Email" domain="[('complaint_source','=','By Email')]"/>
+                        <filter name="complaint_source" string="By LSR" domain="[('complaint_source','=','Complaint generated by LSR')]" />
+                        <filter name="complaint_source" string="By CMS" domain="[('complaint_source','=','By CMS')]" />
+                        <filter name="complaint_source" string="By Anwar Zaib" domain="[('complaint_source','=','By Anwar Zaib')]" />
+                        <filter name="complaint_source" string="Direct" domain="[('complaint_source','=','Direct')]" />
+                    </group>
+                </search>
+             </field>
+         </record>
+
+
+        <!-- =========================== Tasks Logs Begins ================================ -->
+        <record id="tech_open_project_attachment_task_view" model="ir.actions.act_window">
+	        <field name="name">Tasks Logs</field>
+            <field name="res_model">tech.activities.tasks</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <!--<menuitem-->
+            <!--name="Tasks TimeIn/Out Activities"-->
+            <!--action="tech_open_project_attachment_task_view"-->
+            <!--id="menu_tech_open_project_attachment_task_view"-->
+            <!--sequence="40"-->
+            <!--parent="project.menu_project_management">-->
+        <!--</menuitem>-->
+        <record id="tech_activities_form_view" model="ir.ui.view">
+            <field name="name">tech_activities.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">tech.activities.tasks</field>
+            <field name="arch" type="xml">
+                <form string="tech_activities_tasks">
+                    <sheet>
+                        <group string="Technician Activities">
+                            <group>
+                                 <field name="technician_name_tasks"/>
+                                 <field name="tech_name_tasks"/>
+                                 <field name="total_time_tasks"/>
+                            </group>
+                            <group>
+                                 <field name="reason_tasks"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- =========================== Tasks Logs Ends ================================ -->
+         <record model="ir.ui.view" id="project_tasks_activities">
+            <field name="name">Technician Tasks History</field>
+            <field name="view_type">tree</field>
+            <field name="model">tech.activities.tasks</field>
+            <field name="arch" type="xml">
+                <tree string="Technician Activities" editable="top">
+                    <field name="task_id" readonly="1"/>
+                    <field name="cs_number" readonly="1"/>
+                    <field name="branch_code" readonly="1"/>
+                    <field name="tech_name_tasks" readonly="0"/>
+                    <field name="technician_name_tasks"/>
+                    <field name="multi_tech" widget="many2many_tags"/>
+                    <field name="date_start"/>
+                    <field name="date_end"/>
+                    <field name="first_signal"/>
+                    <field name="compute_total_time" readonly="1"/>
+                    <field name="reason_tasks"/>
+                    <field name="systemstatus"/>
+                    <field name="create_date" readonly="1"/>
+                </tree>
+            </field>
+         </record>
+
+        <record  model="ir.ui.view" id="Task_log_Search">
+            <field name="name">Tasks log Search</field>
+            <field name="model">tech.activities.tasks</field>
+            <field name="arch" type="xml">
+                <search string="Search Logs">
+                    <field name="cs_number"/>
+                    <field name="branch_code"/>
+                    <group string="Custom Filter">
+                        <filter string="Create Day" context="{'group_by':'create_date:day'}" help="Create Date"/>
+                        <filter string="Create Month" context="{'group_by':'create_date:month'}" help="Create Date"/>
+                    </group>
+                </search>
+            </field>
+         </record>
+
+        <!--====================================== List of customers showing in project module Begins ==================================-->
+
+        <record id="action_partner_customer_form" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{'default_customer':1, 'search_default_customer':1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a customer: discussions, history of business opportunities,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Customers"
+            action="action_partner_customer_form"
+            id="menu_action_partner_customer_form"
+            sequence="20"
+            parent="project.menu_project_management">
+        </menuitem>
+
+
+        <!--====================================== List of customers showing in project module Ends ==================================-->
+
+
+        <!--<record model="ir.ui.view" id="base.view_partner_form_inherit_inherit">-->
+            <!--<field name="name">res.partner.form</field>-->
+            <!--<field name="model">res.partner</field>-->
+            <!--<field name="inherit_id" ref="base.view_partner_form" />-->
+            <!--<field name="groups_id" eval="[(4,[ref('project.group_project_user')])]"/>-->
+            <!--<field name="arch" type="xml">-->
+                 <!--<xpath expr="//page[@string='Accounting']" position="attributes">-->
+                     <!--<attribute name="invisible">True</attribute>-->
+                 <!--</xpath>-->
+                <!--<xpath expr="//page[@string='Sales &amp; Purchases']" position="attributes">-->
+                    <!--<attribute name="invisible">True</attribute>-->
+                <!--</xpath>-->
+                <!--<xpath expr='//form[@string="Partners"]' position='attributes'>-->
+                    <!--<attribute name="create">false</attribute>-->
+                <!--</xpath>-->
+
+            <!--</field>-->
+        <!--</record>-->
+       <!-- <menuitem action="open_view_project_all" id="menu_tech" name="Projects" parent="menu_project_management" sequence="1"/>-->
+
+
+        <!--====================================== Task form view Beginning ==================================-->
+        <record model="ir.ui.view" id="project.view_task">
+            <field name="name">project.task.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_form2" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="attributes">
+                    <attribute name="class">oe_form_sheet_full_screen</attribute>
+                </xpath>
+                <field name="name" position="replace">
+                    <field name="name" />
+                </field>
+                <field name="partner_id" position="replace">
+
+                </field>
+                <xpath expr="//field[@name='reviewer_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='project_id']" position="before">
+                    <field name="sale_order_task"/>
+                    <field name="partner_id"/>
+                    <field name="cs_number_task"/>
+                    <field name="bank_code_task"/>
+                    <field name="branch_code_task"/>
+                    <field name="city_task"/>
+                    <field name="monitoring_address_task"/>
+                </xpath>
+                <xpath expr="//field[@name='date_deadline']" position="before">
+                    <field name="id"/>
+                    <field name="complaint_reference"/>
+                    <field name="create_uid" readonly="1"/>
+                    <field name="reviewer_id"/>
+                    <!--<field name="user_id"/>-->
+                    <!--<field name="timeIn"/>-->
+                    <!--<field name="first_signal_time_task"/>-->
+                    <!--<field name="timeOut"/>-->
+                    <!--<field name="compute_total_time"/>-->
+                </xpath>
+                <xpath expr="//field[@name='date_deadline']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='categ_ids']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Extra Info']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='id']" position="attributes">
+                    <attribute name="string">Task ID</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Description']" position="attributes">
+                    <attribute name="string">Remarks by Bank</attribute>
+                </xpath>
+                <xpath expr="//field[@name='create_uid']" position="attributes">
+                    <attribute name="string">Logged by</attribute>
+                </xpath>
+                <notebook>
+                    <page string="Remarks by CMS">
+                        <field name="remark_by_cms" placeholder="Enter your remarks"/>
+                    </page>
+                </notebook>
+                <xpath expr="//page[@string='Remarks by Bank']" position="before">
+                    <page string="Timesheet">
+                          <field name="tech_name_tasks" colspan="4" nolabel="1">
+                            <tree editable="top" string="Timesheets">
+                                <field name="technician_name_tasks"/>
+                                <field name="multi_tech" widget="many2many_tags"/>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <field name="first_signal"/>
+                                <field name="compute_total_time"/>
+                                 <field name="reason_tasks" />
+                                <field name="systemstatus"/>
+                            </tree>
+                          </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Task form view Ending ==================================-->
+
+
+        <!--====================================== Issue form view Beginning ==================================-->
+         <record model="ir.ui.view" id="project_issue.project_issue">
+            <field name="name">Project Issue Tracker Form</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.project_issue_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//sheet" position="attributes">
+                    <attribute name="class">oe_form_sheet_full_screen</attribute>
+                </xpath>
+                <field name="name" position="replace">
+                     <field name="name" />
+                </field>
+                <field name="categ_ids" position="attributes">
+                    <attribute name="string">Other Complaints</attribute>
+                </field>
+                <field name="id" position="attributes">
+                    <attribute name="string">Complaint ID</attribute>
+                </field>
+                <field name="version_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="email_from" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="user_id" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </field>
+                <field name="priority" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </field>
+                <xpath expr="//field[@name='project_id']" position="attributes">
+                    <attribute name="invisible">0</attribute>
+                </xpath>
+                <xpath expr="//field[@name='task_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//button[@name='case_escalate']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='priority']" position="after">
+                     <field name="check" readonly="1" attrs="{'invisible': [('check','=',False)]}"/>
+                     <field name="convert_to_task"/>
+                     <field name="complaint_source"/>
+                     <field name="create_uid" readonly="1"/>
+                     <field name="user_id_issue"/>
+                     <field name="pending" groups="project.group_project_manager"/>
+                </xpath>
+                <xpath expr="//field[@name='priority']" position="before">
+                    <field name="create_date"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="before">
+                     <field name="clientname" />
+                     <field name="sale_order_issue"/>
+                </xpath>
+                <xpath expr="//field[@name='create_uid']" position="attributes">
+                    <attribute name="string">Logged by</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                     <field name="cs_number_issue"/>
+                     <field name="bank_code_issue"/>
+                     <field name="branch_code_issue"/>
+                     <field name="city_issue"/>
+                     <field name="monitoring_address_issue"/>
+                </xpath>
+                <xpath expr="//page[@string='Description']" position="before">
+                    <page string="Remarks by CMS">
+                          <field name="cms_remarks" colspan="4" nolabel="1">
+                            <tree editable="bottom" string="Courtesy Remarks">
+                                <field name="responsible_person"/>
+                                <field name="client_name"/>
+                                <field name="remarks"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                            </tree>
+                          </field>
+                    </page>
+                </xpath>
+                        <!--<field name="remark_by_cms" placeholder="Add you remarks..."/>-->
+                <xpath expr="//page[@string='Description']" position="after">
+                    <page string="Remarks by Courtesy">
+                          <field name="courtesy_remarks" colspan="4" nolabel="1">
+                            <tree editable="bottom" string="Courtesy Remarks">
+                                <field name="remarks"/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                            </tree>
+                          </field>
+                    </page>
+                </xpath>
+                <xpath expr="//page[@string='Description']" position="after">
+                    <page string="Timesheet">
+                          <field name="tech_name" colspan="4" nolabel="1">
+                            <tree editable="top" string="Timesheets">
+                                <field name="technician_name"/>
+                                <field name="multi_tech" widget="many2many_tags"/>
+                                <field name="date_start"/>
+                                <field name="date_end"/>
+                                <!--<field name="first_signal"/>-->
+                                <field name="compute_total_time"/>
+                                <field name="reason" />
+                                <field name="systemstatus"/>
+                                <field name="create_date"/>
+                            </tree>
+                          </field>
+                    </page>
+                </xpath>
+                <notebook>
+                    <page string="Checking Criteria">
+                        <group>
+                            <lable><h2>Zone Signals</h2></lable><br/>
+                            <field name="Zone1"/>
+                            <field name="Zone2"/>
+                            <field name="Zone3"/>
+                            <field name="Zone4"/>
+                            <field name="Zone5"/>
+                            <field name="Zone6"/>
+                            <field name="Zone7"/>
+                            <field name="Zone8"/>
+                            <field name="Zone9"/>
+                        </group>
+                        <group>
+                             <lable><h2>Keypad Signals</h2></lable><br/>
+                             <field name="panic"/>
+                             <field name="duress"/>
+                             <field name="medical"/>
+                             <field name="fire"/>
+                        </group>
+                        <lable><h2>BS Connected to</h2></lable>
+                        <group colspan="4">
+                            <field name="gsm"/>
+                        </group>
+                        <group col="6">
+                             <field name="gsmNumber" />
+                             <field name="gsm_postpaid_prepaid" widget="radio"/>
+                        </group>
+                        <group col="6">
+                             <field name="ptcl" />
+                             <field name="ptcl_dedicated_shared" widget="radio"/>
+                        </group>
+                        <group>
+                             <field name="response_check" widget="radio"/>
+                            <field name="check_by" style="width:37%%"/>
+                        </group>
+                    </page>
+                </notebook>
+                <xpath expr="//page[@string='Extra Info']" position="attributes">
+                    <attribute name="invisible">True</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Description']" position="attributes">
+                    <attribute name="string">Remarks by Bank</attribute>
+                </xpath>
+                <xpath expr="//page[@string='Timesheet']" position="after">
+                        <page string="SMS" groups="project.group_project_user">
+                            <group>
+                                <field name="technician_name"/>
+                                <field name="techContact"/>
+                                <field name="count"/>
+                                <field name="sms"/>
+                            </group>
+                            <button name="details" string="Details" type="object" class="btn-link" />
+                            <button name="smsSent" string="Sent" type="object" class="btn-link"  />
+                        </page>
+                </xpath>
+                 <xpath expr="//page[@string='Remarks by Bank']" position="attributes">
+                    <attribute name="groups">project.group_project_user</attribute>
+                </xpath>
+                 <xpath expr="//page[@string='Remarks by CMS']" position="attributes">
+                    <attribute name="groups">project.group_project_user</attribute>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="options">{'limit': 0, 'create': false, 'create_edit': false}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Issue form view Ending ==================================-->
+
+        <!--====================================== List view of Issue form for metrics Begins ==================================-->
+        <record id="mutual_issue_tree" model="ir.ui.view">
+              <field name="name">Project Issue-Feature Tracker Tree</field>
+              <field name="model">project.issue</field>
+              <field name="inherit_id" ref="project_issue.project_feature_tree_view" />
+              <field name="priority" eval="20"/>
+              <field name="arch" type="xml">
+                  <xpath expr="//tree[@string='Feature Tracker Tree']" position="attributes">
+                      <attribute name="default_order">create_date desc</attribute>
+                  </xpath>
+                  <field name="priority" position="after">
+                      <field name="description"/>
+                      <field name="user_id_issue"/>
+                      <field name="cs_number_issue"/>
+                      <field name="bank_code_issue"/>
+                      <field name="branch_code_issue"/>
+                      <field name="city_issue"/>
+                      <field name="monitoring_address_issue"/>
+                      <field name="complaint_source" />
+                  </field>
+                  <field name="id" position="before">
+                      <field name="create_date"/>
+                  </field>
+                  <field name="version_id" position="replace">
+
+                  </field>
+                  <field name="description" position="attributes">
+                     <attribute name="string">Remarks by Bank</attribute>
+                  </field>
+                  <field name="name" position="attributes">
+                     <attribute name="string">Complaints</attribute>
+                  </field>
+                  <field name="partner_id" position="replace">
+
+                  </field>
+                   <field name="user_id" position="replace">
+
+                  </field>
+                  <xpath expr="//field[@name='stage_id']" position="attributes">
+                      <attribute name="string">Complaint Status</attribute>
+                  </xpath>
+
+            </field>
+        </record>
+        <!--====================================== List view of Issue form for metrics ends ==================================-->
+
+        <!--====================================== List view of tasks form for metrics Begins ==================================-->
+        <record id="mutual_task_tree" model="ir.ui.view">
+              <field name="name">project.task.tree</field>
+              <field name="model">project.task</field>
+              <field name="inherit_id" ref="project.view_task_tree2" />
+              <field name="priority" eval="20"/>
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='project_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='date_start']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='date_end']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='progress']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='user_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='name']" position="before">
+                      <field name="id"/>
+                      <field name="complaint_reference"/>
+                  </xpath>
+                  <xpath expr="//field[@name='name']" position="after">
+                      <field name="description"/>
+                      <field name="reviewer_id"/>
+                      <field name="cs_number_task"/>
+                      <field name="bank_code_task"/>
+                      <field name="branch_code_task"/>
+                      <field name="city_task"/>
+                      <field name="monitoring_address_task"/>
+                  </xpath>
+                  <!--<xpath expr="//field[@name='user_id']" position="after">-->
+                      <!--<field name="timeIn"/>-->
+                      <!--<field name="timeOut"/>-->
+                      <!--<field name="compute_total_time"/>-->
+                  <!--</xpath>-->
+                  <xpath expr="//field[@name='description']" position="attributes">
+                    <attribute name="string">Remarks by Bank</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='stage_id']" position="attributes">
+                      <attribute name="string">Task Status</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='id']" position="attributes">
+                    <attribute name="string">Task ID</attribute>
+                  </xpath>
+            </field>
+        </record>
+         <!--====================================== List view of tasks form for metrics ends ==================================-->
+
+
+         <!--==========================Search View of Issues=============================-->
+        <record  model="ir.ui.view" id="project_issue.view_project_issue_filter_search">
+            <field name="name">Project Issue Tracker Search</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.view_project_issue_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='partner_id']" position="before">
+                    <field name="cs_number_issue"/>
+                    <field name="branch_code_issue"/>
+                    <field name="bank_code_issue"/>
+                    <field name="city_issue"/>
+                    <field name="write_uid"/>
+                    <field name="priority"/>
+                    <field name="monitoring_address_issue"/>
+                    <field name="user_id_issue"/>
+                    <field name="tech"/>
+                </xpath>
+                <search string="Issue Tracker Search">
+                    <field name="create_date"/>
+                    <group string="By Day Update">
+                        <filter name="date_last_stage_update" string="Daily" context="{'group_by':'date_last_stage_update:day'}"/>
+                        <filter name="date_last_stage_update" string="Monthly" context="{'group_by':'date_last_stage_update:month'}"/>
+                        <filter name="date_last_stage_update" string="Yearly" context="{'group_by':'date_last_stage_update:year'}"/>
+                    </group>
+                    <group string="By Bank Remarks">
+                        <filter name="description" string="Attended" domain="[('description','!=',False)]" />
+                        <filter name="description" string="Unattended" domain="[('description','=',False)]" />
+                    </group>
+                    <group string="Custom Filter">
+                        <filter name="user_id_issue" string="My" domain="[('user_id_issue','=',uid)]" />
+                        <filter name="user_id_issue" string="Not Forwarded" domain="[('user_id_issue','=',False)]"/>
+                        <filter name="user_id_issue" string="Forwarded" domain="[('user_id_issue','!=',False)]"/>
+                        <filter name="tech" string="Not Assigned" domain="[('tech','=',False)]"/>
+                        <filter name="tech_name" string="Assigned" domain="[('tech','!=','')]" />
+                        <filter name="check" string="Complaints" domain="[('check','=','Issue')]" />
+                        <filter name="check" string="Task" domain="[('check','=','Task')]" />
+                        <filter name="convert_to_task" string="Converted into Task" domain="[('convert_to_task','=',True)]" />
+                        <filter name="pending" string="Old complaints" domain="[('pending','=',True)]" />
+                    </group>
+                    <group string="Complaint Sources">
+                        <filter name="complaint_source" string="By Email" domain="[('complaint_source','=','By Email')]"/>
+                        <filter name="complaint_source" string="By LSR" domain="[('complaint_source','=','Complaint generated by LSR')]" />
+                        <filter name="complaint_source" string="By CMS" domain="[('complaint_source','=','By CMS')]" />
+                        <filter name="complaint_source" string="By Anwar Zaib" domain="[('complaint_source','=','By Anwar Zaib')]" />
+                        <filter name="complaint_source" string="Direct" domain="[('complaint_source','=','Direct')]" />
+                    </group>
+                     <group string="Stages">
+                         <filter name="stage_id" string="Complaints/Tasks" domain="[('stage_id','=','Complaints/Tasks')]" />
+                         <filter name="stage_id" string="Device Replacement" domain="[('stage_id','=','Additional/Device Replacement')]" />
+                         <filter name="stage_id" string="Online Resolved" domain="[('stage_id','=','Online Resolved')]" />
+                         <filter name="stage_id" string="Assigned to Technician" domain="[('stage_id','=','Assigned to Technician')]" />
+                         <filter name="stage_id" string="Time In/Out" domain="[('stage_id','=','Time In/Out')]" />
+                         <filter name="stage_id" string="Issue at bank end" domain="[('stage_id','=','Issue at bank end')]" />
+                         <filter name="stage_id" string="Resolved" domain="[('stage_id','=','Resolved')]" />
+                         <filter name="stage_id" string="Under Process" domain="[('stage_id','=','Under Process')]" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+         <!--==========================Search View of tasks=============================-->
+        <record  model="ir.ui.view" id="project.view_task_search_form_search">
+            <field name="name">project.task.search.form</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_search_form" />
+            <field name="arch" type="xml">
+                 <search string="Tasks">
+                    <field name="priority"/>
+                    <field name="reviewer_id"/>
+                    <field name="cs_number_task"/>
+                    <field name="bank_code_task"/>
+                    <field name="branch_code_task"/>
+                    <field name="city_task"/>
+                    <field name="monitoring_address_task"/>
+                    <group string="Custom Filter">
+                        <filter name="reviewer_id" string="Not Forwarded" domain="[('reviewer_id','=',False)]"/>
+                        <filter name="user_id" string="Not Assigned" domain="[('user_id','=',False)]"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!--====================================== Kanban view of issue begins ==================================-->
+        <record model="ir.ui.view" id="project_issue_kanban_view">
+            <field name="name">Project Issue Kanban</field>
+            <field name="model">project.issue</field>
+            <field name="inherit_id" ref="project_issue.project_issue_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr='//kanban'  position="attributes">
+                    <attribute name="quick_create">0</attribute>
+                </xpath>
+                <xpath expr='//kanban//field[@name="partner_id"]' position="replace">
+                    <span style="color:green !important; font-weight:bold">
+                        <field name="cs_number_issue"/>
+                        <field name="bank_code_issue"/>
+                    </span>
+                </xpath>
+                <xpath expr='//kanban//field[@name="bank_code_issue"]' position="after">
+                    <br/><span style="font-weight:bold">BC<field name="branch_code_issue" /></span>
+                    <span style="margin-left:3px;color:royalblue; font-weight:bold"><field name="city_issue" /></span><br/>
+                    <span style="color:black; font-weight:bold"><field name="create_date"/></span><br/>
+                    <field name="complaint_source"/><br/>
+                    <span style="color:purple; font-weight:bold"><field name="tech"/></span>
+                </xpath>
+                <xpath expr="//kanban" position="attributes">
+                      <attribute name="default_order">create_date desc</attribute>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Kanban view of issue ends ==================================-->
+
+         <!--====================================== Kanban view of task begins ==================================-->
+        <record model="ir.ui.view" id="project_task_kanban">
+            <field name="name">project.task.kanban</field>
+            <field name="model">project.task</field>
+            <field name="inherit_id" ref="project.view_task_kanban"/>
+            <field name="arch" type="xml">
+                <xpath expr='//kanban'  position="attributes">
+                   <attribute name="quick_create">0</attribute>
+                </xpath>
+                <xpath expr='//kanban//field[@name="project_id"]' position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr='//kanban//field[@name="date_deadline"]' position="attributes">
+                   <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr='//kanban//field[@name="project_id"]' position="after">
+                    <field name="partner_id"/><br/>
+                    <span style="color:green !important; font-weight:bold"><field name="cs_number_task"/></span>
+                    <span style="margin-left:3px;color:royalblue; font-weight:bold"><field name="city_task" /></span>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Kanban view of task ends ==================================-->
+
+        <!--====================================== Messages views ==================================-->
+
+          <record id="complaint_message_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Messages</field>
+            <field name="res_model">complaint.messages</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+
+        <menuitem
+            name="Messages"
+            action="complaint_message_open_project_attachment_view"
+            id="menu_complaint_message_open_project_attachment_view"
+            sequence="50"
+            parent="project.menu_project_management">
+        </menuitem>
+
+        <record id="complaint_messages_form_view" model="ir.ui.view">
+            <field name="name">complaint_messages.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">complaint.messages</field>
+            <field name="arch" type="xml">
+                <form string="complaint_messages">
+                    <sheet>
+                        <group string="Complaint Messages">
+                            <group>
+                                 <field name="sender_name"/>
+                            </group>
+                            <group>
+                                <field name="receiver_name"/>
+                                <field name="receiver_contact"/>
+                                <field name="status"/>
+                            </group>
+                        </group>
+                        <separator string="SMS"/>
+                        <group>
+                            <field name="message"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+
+         <record model="ir.ui.view" id="complaint_message_tree">
+            <field name="name">Complaint Messages</field>
+            <field name="view_type">tree</field>
+            <field name="model">complaint.messages</field>
+            <field name="arch" type="xml">
+                <tree string="Complaint Messages" >
+                    <field name="message"/>
+                    <!--<field name="sender_name" />-->
+                    <field name="receiver_name" />
+                    <field name="receiver_contact" />
+                    <field name="status"/>
+                    <field name="date_now"/>
+                </tree>
+            </field>
+         </record>
+
+        <record  model="ir.ui.view" id="complaint_messages_log_search">
+             <field name="name">Messages log Search</field>
+             <field name="model">complaint.messages</field>
+             <field name="arch" type="xml">
+                <search string="Search Logs">
+                    <group string="Custom Filter">
+                        <filter string="Create Day" context="{'group_by':'date_now:day'}" />
+                        <filter string="Create Month" context="{'group_by':'date_now:month'}" />
+                    </group>
+                </search>
+             </field>
+         </record>
+
+    </data>
+</openerp>

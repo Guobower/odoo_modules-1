@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record model="ir.ui.view" id="hr_expense.view_expenses">
+            <field name="name">hr.expense.form</field>
+            <field name="model">hr.expense.expense</field>
+            <field name="inherit_id" ref="hr_expense.view_expenses_form" />
+            <field name="arch" type="xml">
+                 <xpath expr="//sheet" position="attributes">
+                    <attribute name="class">oe_form_sheet_full_screen</attribute>
+                </xpath>
+                <field name="name" position="after">
+                    <!--<field name="partner_id_expense"/>-->
+                    <field name="technician_amount" />
+                </field>
+                <field name="date" position="after">
+                    <field name="date_to"/>
+                </field>
+                 <xpath expr="//field[@name='date']" position="attributes">
+                      <attribute name="string">From</attribute>
+                  </xpath>
+                  <!--<xpath expr="//notebook/page/field/form/group/group/field[@name='ref']" position="after">-->
+                    <!--<field name="product_id"/>-->
+                  <!--</xpath>-->
+            </field>
+         </record>
+          <!--====================================== List view of Employee form for metrics Begins ====================-->
+        <record id="tech_expenses" model="ir.ui.view">
+              <field name="name">hr.expense.expense.tree</field>
+              <field name="model">hr.expense.expense</field>
+              <field name="inherit_id" ref="hr_expense.view_expenses_tree" />
+              <field name="arch" type="xml">
+                  <field name="amount" position="before">
+                      <field name="technician_amount" />
+                  </field>
+                  <xpath expr="//field[@name='date']" position="attributes">
+                      <attribute name="string">From</attribute>
+                  </xpath>
+                  <field name="date" position="after">
+                      <field name="date_to"/>
+                  </field>
+                  <xpath expr="//field[@name='amount']" position="attributes">
+                      <attribute name="string">Actual Amount</attribute>
+                  </xpath>
+              </field>
+        </record>
+         <!--====================================== List view of Employee form for metrics Ends ===================-->
+
+         <record id="tech_expenses" model="ir.ui.view">
+              <field name="name">hr.employee.tree</field>
+              <field name="model">hr.employee</field>
+              <field name="inherit_id" ref="hr.view_employee_tree" />
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='work_phone']" position="after">
+                      <field name="work_location"/>
+                  </xpath>
+              </field>
+        </record>
+    </data>
+</openerp>

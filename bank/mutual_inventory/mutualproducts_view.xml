@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record model="ir.actions.act_window" id="custom_quantsact">
+            <field name="name">Quants</field>
+            <field name="res_model">stock.quant</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+            <field name="context">{'search_default_internal_loc': 1}</field>
+            <field name="help">This analysis gives you a fast overview on the current stock level of your products and their today's inventory value.</field>
+        </record>
+        <menuitem
+            name="Warehouse"
+            action="custom_quantsact"
+            id="menu_custom_quantsact"
+            sequence="22"
+            parent="project.menu_project_management">
+        </menuitem>
+
+        <record model="ir.ui.view" id="product_variant_id">
+            <field name="name">product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lst_price']" position="after">
+                 <field name="acc_inv_check"/>
+                </xpath>
+                <field name="ean13" position="replace">
+
+                </field>
+                <field name="default_code" position="replace">
+                    <field name="default_code" style="visibility:hidden"/>
+                </field>
+            </field>
+        </record>
+         <record model="ir.ui.view" id="product_tree_id">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_product_tree_view" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='lst_price']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='uom_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='ean13']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='default_code']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='price']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+            </field>
+        </record>
+         <record model="ir.ui.view" id="product_variant_ids">
+            <field name="name">product.template.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view" />
+            <field name="arch" type="xml">
+                <field name="ean13" position="replace">
+
+                </field>
+                <field name="default_code" position="replace">
+
+                </field>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="stock.view_picking_form_mutual">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="cs_number"/>
+                    <field name="approve" groups="stock.group_stock_manager"/>
+                    <field name="status" />
+                </xpath>
+                <xpath expr="//button[@string='Transfer']" position="attributes">
+                    <attribute name="states"> </attribute>
+                </xpath>
+                <xpath expr="//button[@string='Transfer']" position="attributes">
+                    <attribute name="attrs">{'invisible':[('approve','=',False)]}</attribute>
+                </xpath>
+                <xpath expr="//field[@name='approve']" position="attributes">
+                    <attribute name="attrs">{'invisible':['|','|','|','|','|',('state','=','draft'),('state','=','cancel'),('state','=','waiting'),('state','=','confirmed'),('state','=','done'),('state','=','partially_available')]}</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="stock.vpicktree_mutual">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="cs_number"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_stock_picking_inherit_search" model="ir.ui.view">
+              <field name="name">stock.picking.search.expand</field>
+              <field name="model">stock.picking</field>
+              <field name="inherit_id" ref="stock.view_picking_internal_search"/>
+              <field name="arch" type="xml">
+                    <xpath expr="//search" position="inside">
+                        <field name="cs_number" />
+                        <field name="origin" string="Source Document" />
+                    </xpath>
+              </field>
+        </record>
+    </data>
+</openerp>

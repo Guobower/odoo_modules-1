@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+         <record model="ir.actions.act_window" id="custom_action_sales_order">
+            <field name="name">Sales Orders</field>
+            <field name="res_model">sale.order</field>
+            <field name="src_model">account.analytic.account</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a quotation that can be converted into a sales
+                order.
+              </p><p>
+                Use sale orders to track everything that should be invoiced
+                at a fix price on a contract.
+              </p>
+            </field>
+        </record>
+         <menuitem
+            name="SO/Courier Sheet"
+            action="custom_action_sales_order"
+            id="menu_custom_action_sales_order"
+            sequence="21"
+            parent="project.menu_project_management">
+        </menuitem>
+
+        <record id="relatives_open_project_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Other Contacts</field>
+            <field name="res_model">customer.relatives</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem
+            name="Other Contacts"
+            action="relatives_open_project_attachment_view"
+            id="menu_relatives_open_project_attachment_view"
+            sequence="7"
+            parent="base.menu_sales">
+        </menuitem>
+        <record id="customer_relatives_form_view" model="ir.ui.view">
+            <field name="name">customer_relatives.form.view</field>
+            <field name="view_type">form</field>
+            <field name="model">customer.relatives</field>
+            <field name="arch" type="xml">
+                <form string="customer_relatives">
+                    <sheet>
+                        <group string="Other Contacts">
+                            <group>
+                                 <field name="customer_r"/>
+                                 <field name="other"/>
+                                 <field name="relationship"/>
+                            </group>
+                            <group>
+                                <field name="contact_1"/>
+                                <field name="contact_2"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="cs_id">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form" />
+            <field name="arch" type="xml">
+                <field name="name" position="after">
+                    <field string="CS Number" name="cs_number"  placeholder="CS Number"/>
+                    <field string="Branch Code" name="branch_code"  placeholder="Branch Code" />
+                    <field string="Bank Code" name="bank_code" placeholder="Bank Code"/>
+                    <field string="Uplink Date" name="uplink_date" placeholder="Uplink Date"/>
+                </field>
+                <field name="title" position="after">
+                    <field name="is_employee" class="oe_inline" attrs="{'invisible': [('customer','=',True)]}"/>
+                    <field name="is_technician"  class="oe_inline" attrs="{'invisible': [('customer','=',True)]}"/>
+                    <field name="is_rider"  class="oe_inline" attrs="{'invisible': [('customer','=',True)]}"/>
+                    <field name="customer_visit"/>
+                </field>
+                <field name="function" position="after">
+                    <field name="office"/>
+                </field>
+                <field name="office" position="attributes">
+                    <attribute name="string">PTCL1</attribute>
+                </field>
+                <field name="phone" position="attributes">
+                    <attribute name="string">PTCL2</attribute>
+                </field>
+                <label for="street" string="Address" position="replace">
+                    <label for="street" string="Monitoring Address" />
+                </label>
+                <xpath expr="//form/sheet/group" position="after" >
+                    <br/>
+                    <separator string="Other Contacts"/>
+                <group>
+                     <field name="customer_relatives" colspan="4" nolabel="1">
+                            <tree editable="top" string="Relative">
+                                 <field name="other"/>
+                                 <field name="relationship"/>
+                                 <field name="contact_1"/>
+                                 <field name="contact_2"/>
+                                 <field name="sms_alert"/>
+                            </tree>
+                     </field>
+                </group>
+                </xpath>
+                <!--<xpath expr="//field[@name='parent_root_id']" position="attributes">-->
+                    <!--<attribute name="domain">[('is_company','=',True)]</attribute>-->
+                <!--</xpath>-->
+                <xpath expr="//field[@name='is_company']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='is_branch']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                 <xpath expr="//field[@name='parent_root_id']" position="attributes">
+                    <attribute name="required">1</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/group" position="after" >
+                    <br/>
+                    <separator string="Branch Details"/>
+                    <group colspan="4" col="6">
+                        <field name="guard_less_branch" widget="radio" />
+                        <field name="locker_available" widget="radio"/>
+                        <field name="saturday_open" widget="radio"/>
+                    </group>
+                    <group>
+                        <field name="customer_branch_det" colspan="6" nolabel="1" attrs="{'invisible': [('guard_less_branch','=','No')]}">
+                            <tree editable="top" string="Branch Details">
+                                 <field name="guardname"/>
+                                 <field name="number"/>
+                                 <field name="securityco"/>
+                            </tree>
+                     </field>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='mobile']" position="after">
+                    <field name="rf_id"/>
+                    <field name="force_code"/>
+                </xpath>
+                <xpath expr="//field[@name='title']" position="after">
+                    <field name="cus_ntn_no" />
+                    <field name="cus_strn_no" />
+                    <field name="parent" />
+                </xpath>
+                <xpath expr="//field[@name='country_id']" position="before">
+                    <field name="region"/>
+                </xpath>
+            </field>
+        </record>
+        <!--==========================Search View Begins=============================-->
+        <record  model="ir.ui.view" id="view_res_partner_filter">
+            <field name="name">res.partner.select</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_res_partner_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//search/field[@name='name']" position="before">
+                    <field name="cs_number"/>
+                    <field name="branch_code" />
+                    <field name="bank_code" />
+                    <field name="rf_id"/>
+                    <field name="force_code"/>
+                    <field name="mobile" />
+                    <field name="phone" />
+                    <field name="email"/>
+                    <field name="payment_next_action" />
+                    <field name="payment_responsible_id" />
+                </xpath>
+                <search string="Search Partner">
+                     <group string="Custom Filter">
+                         <filter  string="Main Heads" domain="[('parent','=',True)]"/>
+                         <filter string="Active" domain="[('active','=',True)]"/>
+                         <filter string="Inactive" domain="[('active','=',False)]"/>
+
+                     </group>
+                     <group string="Group By">
+                         <filter name='is_employee' string="Employee" domain="[('is_employee','=',True)]"/>
+                         <filter string="Customers" domain="['&amp;',('is_company','=',True),('is_branch','=',False)]"/>
+                         <filter string="Suppliers" domain="[('supplier','=',True)]"/>
+                     </group>
+                </search>
+            </field>
+        </record>
+         <!--==========================Search View Ends=============================-->
+
+        <!--====================================== List view of customer form for metrics Begins ====================-->
+        <record id="mutual_customer_tree" model="ir.ui.view">
+              <field name="name">res.partner.tree</field>
+              <field name="model">res.partner</field>
+              <field name="inherit_id" ref="base.view_partner_tree" />
+              <field name="arch" type="xml">
+                  <field name="phone" position="after">
+                      <field name="cs_number"/>
+                      <field name="branch_code"/>
+                      <field name="city"/>
+                  </field>
+              </field>
+        </record>
+         <!--====================================== List view of customer form for metrics Ends ===================-->
+
+        <!--====================================== List view of res.user Begins ==================================-->
+        <record id="mutual_view_users_tree" model="ir.ui.view">
+              <field name="name">res.users.tree</field>
+              <field name="model">res.users</field>
+              <field name="inherit_id" ref="base.view_users_tree" />
+              <field name="arch" type="xml">
+                  <field name="name" position="after">
+                      <field name="city"/>
+                      <field name="mobile"/>
+                  </field>
+              </field>
+        </record>
+        <!--====================================== List view of res.user Ends ==================================-->
+
+        <record id="mutual_users_form" model="ir.ui.view">
+              <field name="name">res.users.form</field>
+              <field name="model">res.users</field>
+              <field name="inherit_id" ref="base.view_users_form" />
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='signature']" position="after">
+                      <field name="signature_image" />
+                  </xpath>
+              </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale.view_order_id">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="cs_number"/>
+                    <field name="region"/>
+                    <field name="installation_date"/>
+                    <field name="complaint_reference"/>
+                    <field name="dispatch_sheet_date"/>
+
+                </xpath>
+                <xpath expr="//notebook/page[@string='Order Lines']" position="after">
+                    <page string="Remarks">
+                        <group col="4">
+                            <field name="tcs_receipt"/>
+                            <field name="tcs_delivery_status"/>
+                        </group>
+                        <group style="margin-top:10px">
+                            <field name="remarks"/>
+                        </group>
+                    </page>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="domain">"['|',('customer','=',True),('is_technician','=',True)]"</attribute>
+                </xpath>
+                <xpath expr="//field[@name='pricelist_id']" position="after">
+                    <field name="req_ref"/>
+                    <field name="so_status"/>
+                    <field name="details"  attrs="{'invisible': ['|',('so_status','=','None'),('so_status','=','All Items Installed')],'required': [('so_status','!=','None'),('so_status','!=','All Items Installed')]}"/>
+                    <field name="comp_ref"/>
+                </xpath>
+                <xpath expr="//field[@name='req_ref']" position="attributes">
+                    <attribute name="options">{'limit': 0, 'create': false, 'create_edit': false}</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="sale.view_order_complaint_id">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree" />
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="bank_code"/>
+                    <field name="cs_number"/>
+                    <field name="branch_code"/>
+                    <field name="customer_name"/>
+                    <field name="region"/>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="replace">
+                    <field name="dispatch_sheet_date"/>
+                    <field name="so_status"/>
+                </xpath>
+                 <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                  <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="string">Serial No.</attribute>
+                </xpath>
+                 <xpath expr="//tree[@string='Sales Orders']" position="attributes">
+                    <attribute name="colors">orange:so_status=='All Items Installed';brown:so_status=='Some Items Left';purple:so_status=='Additional Items Installed'</attribute>
+                  </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="sale.view_order_complaint_id_filter">
+            <field name="name">sale.order.list.select</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="complaint_reference"/>
+                </xpath>
+            </field>
+        </record>
+
+
+        <record model="ir.ui.view" id="sale.view_order_quotation_id">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree" />
+            <field name="arch" type="xml">
+                 <xpath expr="//field[@name='partner_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="after">
+                    <field name="bank_code"/>
+                    <field name="cs_number"/>
+                    <field name="branch_code"/>
+                    <field name="customer_name"/>
+                    <field name="region"/>
+                </xpath>
+                <xpath expr="//field[@name='name']" position="attributes">
+                    <attribute name="string">Serial No.</attribute>
+                </xpath>
+                <xpath expr="//field[@name='date_order']" position="replace">
+                    <field name="dispatch_sheet_date"/>
+                    <field name="so_status"/>
+                </xpath>
+                 <xpath expr="//field[@name='user_id']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                  <xpath expr="//field[@name='state']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//tree[@string='Quotation']" position="attributes">
+                    <attribute name="colors">orange:so_status=='All Items Installed';brown:so_status=='Some Items Left';purple:so_status=='Additional Items Installed'</attribute>
+                </xpath>
+            </field>
+        </record>
+        <record model="ir.ui.view" id="sale.view_order_complaint_id_filter">
+            <field name="name">sale.order.list.select</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_sales_order_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="before">
+                    <field name="complaint_reference"/>
+                </xpath>
+            </field>
+        </record>
+         <record id="mutual_filter" model="ir.ui.view">
+              <field name="name">sale.order.list.select</field>
+              <field name="model">sale.order</field>
+              <field name="inherit_id" ref="sale.view_sales_order_filter" />
+              <field name="arch" type="xml">
+                  <field name="name" position="before">
+                      <field name="cs_number"/>
+                      <field name="branch_code"/>
+                      <field name="warehouse_id" string="Stock Out From Tech WH"/>
+                      <field name="so_status" string="SO Status"/>
+                  </field>
+                  <search string="Search Sales Order">
+                      <group string="Sale Order day/month">
+                        <filter string="SO Daily" domain="[('date_order', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('date_order', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                        <filter string="SO By Day" context="{'group_by':'date_order:day'}" />
+                        <filter string="SO By Month" context="{'group_by':'date_order:month'}" />
+                        <filter string="SO By Year" context="{'group_by':'date_order:year'}" />
+                      </group>
+                      <group string="Dispatch Sheet daily/day/month/year">
+                        <filter string="DS Daily" domain="[('dispatch_sheet_date', '&gt;=', datetime.datetime.now().strftime('%Y-%m-%d 00:00:00')),('dispatch_sheet_date', '&lt;=', datetime.datetime.now().strftime('%Y-%m-%d 23:23:59'))]"/>
+                        <filter string="DS By Day" context="{'group_by':'dispatch_sheet_date:day'}" />
+                        <filter string="DS By Month" context="{'group_by':'dispatch_sheet_date:month'}" />
+                        <filter string="DS By Year" context="{'group_by':'dispatch_sheet_date:year'}" />
+                      </group>
+                      <group string="SO Status">
+                          <filter string="All Items Installed" domain="[('so_status','=','All Items Installed')]"/>
+                          <filter string="Some Items Left" domain="[('so_status','=','Some Items Left')]"/>
+                          <filter string="Additional Items Installed" domain="[('so_status','=','Additional Items Installed')]"/>
+                      </group>
+                      <group string="Stock">
+                          <filter string="Stock In Techinician WH" domain="[('is_tech','=',True)]"/>
+                          <filter string="Stock Out from Technician WH" domain="[('warehouse_name','!=','MSS')]"/>
+                      </group>
+                  </search>
+              </field>
+        </record>
+
+         <!--====================================== Kanban view of partner begins ==================================-->
+        <record model="ir.ui.view" id="base.res_partner_kanban">
+            <field name="name">res.partner.kanban</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.res_partner_kanban_view"/>
+            <field name="arch" type="xml">
+                <xpath expr='//kanban/templates/t/div/div/h4/a/field[@name="display_name"]' position="after">
+                    <br/><span style="color:grey;"><field name="cs_number"/></span>
+                    <br/><span style="color:grey;"><field name="branch_code"/></span>
+                </xpath>
+            </field>
+        </record>
+        <!--====================================== Kanban view of partner ends ==================================-->
+        <record model="ir.ui.view" id="sale.view_order_line_tree_mutual">
+            <field name="name">sale.order.line.tree</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_order_line_tree" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_partner_id']" position="after">
+                    <field name="order_bank_code"/>
+                    <field name="order_cs_number"/>
+                    <field name="order_branch_code"/>
+                    <field name="order_dispatched_date" />
+                    <field name="order_installation_date" />
+                </xpath>
+            </field>
+        </record>
+
+         <record model="ir.ui.view" id="sale.view_sales_order_line_filter_mutual">
+            <field name="name">sale.order.line.select</field>
+            <field name="model">sale.order.line</field>
+            <field name="inherit_id" ref="sale.view_sales_order_line_filter" />
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_id']" position="before">
+                    <field name="order_bank_code"/>
+                    <field name="order_cs_number"/>
+                </xpath>
+                <xpath expr="//field[@name='salesman_id']" position="replace">
+                    <field name="order_branch_code"/>
+                </xpath>
+               <!-- <xpath expr="//filter[@string='Status']" position="replace">
+                    <filter string="Bank Code"  context="{'group_by':'order_bank_code'}"/>
+                </xpath> -->
+            </field>
+        </record>
+        <record id="so_line_open_attachment_view" model="ir.actions.act_window">
+	        <field name="name">Product History</field>
+            <field name="res_model">sale.order.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">click create to add a new record</p>
+            </field>
+        </record>
+        <menuitem
+            name="Product History"
+            action="so_line_open_attachment_view"
+            id="menu_so_line_open_attachment_view"
+            sequence="22"
+            parent="project.menu_project_management">
+        </menuitem>
+
+         <record id="so_order_line_tree" model="ir.ui.view">
+              <field name="name">sale.order.line.tree</field>
+              <field name="model">sale.order.line</field>
+              <field name="inherit_id" ref="sale.view_order_line_tree" />
+              <field name="priority" eval="20"/>
+              <field name="arch" type="xml">
+                  <xpath expr="//field[@name='salesman_id']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='price_subtotal']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='state']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+                  <xpath expr="//field[@name='invoiced']" position="attributes">
+                      <attribute name="invisible">1</attribute>
+                  </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
